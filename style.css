@@ -12,6 +12,7 @@
     --vanilla_icecream_cake: #FFFFFF;
     --evening_breeze: #63B9D6;
   }
+  
 
 body {
     background-color: var(--moncarch_blue);
@@ -33,12 +34,12 @@ body {
     padding: 10px;
     background-color: var(--vanilla_icecream_cake);
     position: relative;
+    border-radius: 10px;
 }
 
 .mainFormDiv {
     text-align:center;
     padding-bottom: 24px;
-    padding-top: 10px;
 }
 
 .simpleDivision{
@@ -48,7 +49,6 @@ body {
     margin: 20px 16px;
     text-align: center;
 }
-
 
 .inputText {
     width: 90%;
@@ -60,7 +60,7 @@ body {
     border-radius: 10px;
 }
 
-#login-button {
+.mainPageButton {
     background-color: var(--moncarch_blue);
     text-align: center;
     display: inline-block;
@@ -71,6 +71,7 @@ body {
     font-size: 20px;
     line-height: 48px;
     width: 100%;
+    font-family: 'Open Sans';
 }
 
 #div-link-forgot-password{
@@ -79,15 +80,25 @@ body {
 }
 
 #link-create-account {
-    background-color:var(--sky_blue);
+    background-color:var(--vanilla_icecream_cake);
     color: var(--moncarch_blue);
-    padding: 15px 25px;
+    padding: 15px 15px;
     text-decoration: none;
     border-radius: 10px;
     font-size: 20px;
     line-height: 48px;
     width: 100%;
-    border-width: 1px;
-    border-color: var(--midnight);
-    border-style: solid
+    border-width: 3px;
+    border-color: var(--moncarch_blue);
+    border-style: solid;
+    font-family: 'Open Sans';
+    font-weight: bold;
+  }
+
+  .labelFormHeader{
+    color: var(--moncarch_blue);
+    font-size: 30px;
+    font-family: 'Open Sans';
+    font-weight: 200;
+    padding-bottom: 50px;
   }
