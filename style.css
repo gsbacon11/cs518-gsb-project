@@ -1,0 +1,93 @@
+:root {
+    --moncarch_blue: #003057;
+    --silver_reign: #828A8F;
+    --sky_blue:      #98C5EA;
+    --carrier_metal: #404A5A;
+    --midnight: #0A192D;
+    --coastal_storm: #ACAAB4;
+    --azure: #4248DD;
+    --denim: #3658AD;
+    --auminium: #E1EAF0;
+    --barry_blue: #729BE6;
+    --vanilla_icecream_cake: #FFFFFF;
+    --evening_breeze: #63B9D6;
+  }
+
+body {
+    background-color: var(--moncarch_blue);
+  }
+#odu-logo{
+  /*border-radius: 100px;*/
+  width: 50%;
+  height: auto;
+}
+
+#main-vert{
+    display: flex;
+    vertical-align: middle;
+}
+.mainForm {
+    box-shadow: 5px 4px 4px 1px var(--silver_reign);
+    margin: auto;
+    width: 500px;
+    padding: 10px;
+    background-color: var(--vanilla_icecream_cake);
+    position: relative;
+}
+
+.mainFormDiv {
+    text-align:center;
+    padding-bottom: 24px;
+    padding-top: 10px;
+}
+
+.simpleDivision{
+    align-items: center;
+    border-bottom: 1px solid #dadde1;
+    display: flex;
+    margin: 20px 16px;
+    text-align: center;
+}
+
+
+.inputText {
+    width: 90%;
+    border: 1px solid var(--silver_reign);
+    padding: 12px 20px;
+    margin: 8px 0;
+    font-size: 16px;
+    vertical-align: middle;
+    border-radius: 10px;
+}
+
+#login-button {
+    background-color: var(--moncarch_blue);
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    color: var(--vanilla_icecream_cake);
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    line-height: 48px;
+    width: 100%;
+}
+
+#div-link-forgot-password{
+    padding-top: 20px;
+    color: var(--moncarch_blue);
+}
+
+#link-create-account {
+    background-color:var(--sky_blue);
+    color: var(--moncarch_blue);
+    padding: 15px 25px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 20px;
+    line-height: 48px;
+    width: 100%;
+    border-width: 1px;
+    border-color: var(--midnight);
+    border-style: solid
+  }

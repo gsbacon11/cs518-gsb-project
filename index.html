@@ -2,16 +2,31 @@
 <html>
     <head>
         <title>CS518 Project</title>
+        <link rel="stylesheet" type="text/css" href="style.css" />
     </head>
     <body>
-        <input type="text" id="login-email" name="login-email" autofocus placeholder="Email">
-        <input type="password" id="login-password" name="login-password" autofocus placeholder="Password">
-        <br></br>
-        <button type="button">Login</button>
-        <br></br>
-        <a href="reset_password.html">Forgot password?</a>
-        <br></br>
-        <a href="create_account.html">Create Account</a>
+        <div id="main-vert">
+        <img src="old-dominion-monarchs.svg" id="odu-logo"></img>
+        <div class="mainForm">
+            <div class="mainFormDiv">
+                <div>
+                    <input type="text" id="login-email" name="login-email" autofocus class="inputText" placeholder="Email">
+                </div>
+                <div>
+                    <input type="password" id="login-password" name="login-password" autofocus class="inputText"  placeholder="Password">
+                </div>
+                <div>
+                    <button type="button" id="login-button">Log In</button>
+                </div>
+                <div id="div-link-forgot-password">
+                    <a href="reset_password.html" id="link-forgot-password">Forgot password?</a>
+                </div>
+                <div class = "simpleDivision"></div>
+                <div>
+                    <a href="create_account.html" id="link-create-account">Create New Account</a>
+                </div>
+            </div>
         </div>
+    </div>
     </body>
 </html>
