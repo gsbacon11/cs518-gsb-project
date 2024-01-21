@@ -1,0 +1,31 @@
+
+.frameHeader {
+    border-bottom: 3px solid var(--moncarch_blue);
+    width: 100%;
+    height: 100px;
+    background-color: var(--moncarch_blue);
+    margin-top: 0px;
+    color: white;
+  }
+
+#div-main {
+    display: flex;
+    align-items: center;
+}
+
+#user-logo {
+    height: 80px;
+    width: auto;
+    border: 1px solid red;
+}
+
+#div-middle {
+    width: 80%;
+}
+
+#menu-icon { 
+    height: 80px;
+    width: auto;
+    padding-top: 5px;
+    border: 1px solid red;
+}
