@@ -45,7 +45,7 @@ function verifyPassword(){
         // Password NOT correct format
         element_input_password.style["border-color"] = "red";
         element_div_error_password.innerHTML =
-        "<label>Password must be greater than 7 characters with no spaces. Please try again.</label>"
+        "<label>Password must be greater than 7 characters with no spaces.</label>"
 
         return false;
     } else {
@@ -100,5 +100,16 @@ function onSignUp () {
         email_error_shown = false;
         password_error_shown = false;
         console.log("Signed up!");
+    }
+}
+
+function onPasswordReset () {
+    // Verify email and password
+    var password_valid = verifyPassword();
+    var passwords_match = verifyMatchingPasswords();
+    if(email_valid && password_valid && passwords_match){
+        email_error_shown = false;
+        password_error_shown = false;
+        console.log("Password Reset!");
     }
 }

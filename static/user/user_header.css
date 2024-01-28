@@ -1,12 +1,30 @@
+body {
+    background-color: var(--monarch-blue);
+}
 
 .frameHeader {
-    border-bottom: 3px solid var(--moncarch_blue);
+    /*border-bottom: 3px solid var(--moncarch_blue);*/
     width: 100%;
     height: 100px;
     background-color: var(--moncarch_blue);
     margin-top: 0px;
     color: white;
-  }
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+}
+
+#div-header {
+    width: 100%;
+    height: 100px;
+    background-color: var(--moncarch_blue);
+    margin-top: 0px;
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
 #div-main {
     display: flex;
@@ -16,7 +34,7 @@
 #user-logo {
     height: 80px;
     width: auto;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 }
 
 #div-middle {
@@ -27,5 +45,19 @@
     height: 80px;
     width: auto;
     padding-top: 5px;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 }
+
+#overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+  }
