@@ -1,0 +1,104 @@
+
+
+body {
+    background-color: var(--moncarch_blue);
+  }
+  
+#odu-logo {
+  /*border-radius: 100px;*/
+  width: 50%;
+  height: auto;
+}
+
+#main-vert {
+    display: flex;
+    vertical-align: middle;
+}
+.mainForm {
+    box-shadow: 5px 4px 4px 1px var(--silver_reign);
+    margin: auto;
+    width: 500px;
+    padding: 10px;
+    background-color: var(--vanilla_icecream_cake);
+    position: relative;
+    border-radius: 10px;
+}
+
+.mainFormDiv {
+    text-align:center;
+    padding-bottom: 24px;
+}
+
+.simpleDivision {
+    align-items: center;
+    border-bottom: 1px solid #dadde1;
+    display: flex;
+    margin: 20px 16px;
+    text-align: center;
+}
+
+.inputText {
+    width: 90%;
+    border: 1px solid var(--silver_reign);
+    padding: 12px 20px;
+    margin: 8px 0;
+    font-size: 20px;
+    vertical-align: bottom;
+    border-radius: 10px;
+    font-family: 'Open Sans';
+}
+
+.mainPageButton {
+    background-color: var(--moncarch_blue);
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    color: var(--vanilla_icecream_cake);
+    border: none;
+    border-radius: 10px;
+    font-size: 25px;
+    line-height: 48px;
+    width: 100%;
+    font-family: 'Open Sans';
+    margin-top: 5px;
+}
+
+#div-link-forgot-password {
+    padding-top: 20px;
+    color: var(--moncarch_blue);
+}
+
+#link-create-account {
+    background-color:var(--vanilla_icecream_cake);
+    color: var(--moncarch_blue);
+    padding: 15px 15px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 20px;
+    line-height: 48px;
+    width: 100%;
+    border-width: 3px;
+    border-color: var(--moncarch_blue);
+    border-style: solid;
+    font-family: 'Open Sans';
+    font-weight: bold;
+  }
+
+  .labelFormHeader {
+    color: var(--moncarch_blue);
+    font-size: 30px;
+    font-family: 'Open Sans';
+    font-weight: 200;
+    padding-bottom: 50px;
+  }
+
+
+.divUserError {
+    color: red;
+    /*font-family: 'Open Sans';*/
+    font-size: 15px;
+    position: relative;
+    text-align: left;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}

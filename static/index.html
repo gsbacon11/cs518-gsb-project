@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CS518 Project</title>
+        <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+        <link rel="stylesheet" type="text/css" href="variables.css" />
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <script src="index.js"></script>
+    </head>
+    <body>
+        <div id="main-vert">
+        <img src="./assets/old-dominion-monarchs.svg" id="odu-logo"></img>
+        <div class="mainForm">
+            <div class="mainFormDiv">
+                <input type="text" id="login-email" class="inputText" placeholder="Email">
+                <div id="div-error-email" class="divUserError"></div>
+                <input type="password" id="login-password" class="inputText"  placeholder="Password">
+                <div id="div-error-password" class="divUserError"></div>
+                <button type="button" id="login-button" class="mainPageButton" onclick="inputValidation()" >Log In</button>
+                <div id="div-link-forgot-password">
+                    <a href="reset_password.html" id="link-forgot-password">Forgot password?</a>
+                </div>
+                <div class = "simpleDivision"></div>
+                <div>
+                    <a href="create_account.html" id="link-create-account">Create New Account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>
