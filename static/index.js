@@ -79,7 +79,7 @@ function onSignIn () {
     if(email_valid && password_valid){
         email_error_shown = false;
         password_error_shown = false;
-        window.location.href = "./user/user_main.html";
+        window.location.href = "./user/account.html";
     }
 }
 
@@ -99,15 +99,15 @@ function onSignUp () {
     if(email_valid && password_valid && passwords_match){
         email_error_shown = false;
         password_error_shown = false;
-        console.log("Signed up!");
+        document.getElementById("div-success-message").innerHTML = "<label>Account creation request sent to admin. An email verification will be sent when an admin reponds to the request.</label>"
     }
 }
 
-function onPasswordReset () {
+function onAccountPasswordReset () {
     // Verify email and password
     var password_valid = verifyPassword();
     var passwords_match = verifyMatchingPasswords();
-    if(email_valid && password_valid && passwords_match){
+    if(password_valid && passwords_match){
         email_error_shown = false;
         password_error_shown = false;
         console.log("Password Reset!");

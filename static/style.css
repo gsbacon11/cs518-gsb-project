@@ -15,7 +15,7 @@ body {
     vertical-align: middle;
 }
 .mainForm {
-    box-shadow: 5px 4px 4px 1px var(--silver_reign);
+    /*box-shadow: 5px 4px 4px 1px var(--silver_reign);*/
     margin: auto;
     width: 500px;
     padding: 10px;
