@@ -10,5 +10,5 @@ app.listen(port, () =>{
 });
 
 app.get("/", (req,res) => {
-    res.send("wefwfw you")
+    res.send(" api")
 });

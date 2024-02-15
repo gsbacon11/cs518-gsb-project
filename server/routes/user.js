@@ -3,10 +3,8 @@ const router = express.Router();
 const database = require('../database');
 
 
-
 router.get("/",(req,res)=>{
-    res.send("user api")
-    database.execute("select * user", function(err,result){
+    database.execute("select * from users;", function(err,result){
         res.send(result);
     })
 });
