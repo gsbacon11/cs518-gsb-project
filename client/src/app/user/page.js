@@ -1,8 +1,8 @@
 import Image from "next/image";
-import PasswordReset from "@/components/password_reset/password_reset";
-import styles from '../PreSignIn.module.css';
+import styles from '@/app/PreSignIn.module.css';
+
 //"use client";
-export default function Home() {
+export default function AccountSettings() {
   return (
     <main>
       <div id={styles.divMainVert}>
