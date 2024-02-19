@@ -1,7 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const database = require('../database');
-const {comparePassword} = require("../utils/helper");
+const database = require("../database");
+const {comparePassword, verifyToken} = require("../utils/helper");
+const jwt = require("jsonwebtoken");
+const {sendEmail} = require("../utils/helper");
+router.get("/", verifyToken, (req,res) => {
+    try {
+        database.execute("select * from users where userID=?;",
+        [req.userID],
+        function(err, result){
+            if(result==0){
+                res.status(500).send("Record not found");
+            }else{
+
+                sendEmail("gsbacon11@gmail.com", "ODU Portal Login", "Verification Code: 1234");
+                res.status(200).send(result);
+            }
+        })
+    } catch(error){
+        console.log(error.message);
+    } 
+});
 
 router.post("/",(req,res)=>{
     try {
@@ -12,7 +31,22 @@ router.post("/",(req,res)=>{
                 res.status(401).send("Email not found!");
             }else{
                 if(comparePassword(req.body.password, result[0].password)){
-                    res.status(200).send("Logged in!");
+
+                    const token = jwt.sign(
+                    {
+                        user: result[0].userID,
+                        email: req.body.email
+                    },
+                    process.env.TOKEN_SECRET_KEY,
+                    {expiresIn:"1h"}
+                    );
+                    res.status(200).send({
+                        data: {
+                            toke: token,
+                            email: req.body.email,
+                            userId: result[0].userID
+                        }
+                });
                 }else{
                     res.status(401).send("Password does not match!");
                 }
@@ -21,7 +55,7 @@ router.post("/",(req,res)=>{
     } catch(error){
         console.log(error.message);
     }
-});
+}); 
 
 
 

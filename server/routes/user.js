@@ -4,7 +4,7 @@ const database = require('../database');
 const {hashPassword} = require("../utils/helper");
 
 
-router.get("/",(req,res)=>{
+router.get("/",(req, res)=>{
     database.execute("select * from users;", function(err, result){
         res.send(result);
     })
