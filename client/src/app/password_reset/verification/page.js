@@ -1,13 +1,13 @@
 import Logo from "@/components/common/main_logo";
-import PasswordReset from "@/components/password_reset/password_reset";
+import PasswordResetVerification from "@/components/password_reset/password_reset_verification";
 import styles from '@/app/PreSignIn.module.css';
 //"use client";
-export default function PasswordResetPage() {
+export default function PasswordResetVerificationPage() {
   return (
     <main>
       <div id={styles.divMainVert}>
         <Logo/>
-        <PasswordReset />
+        <PasswordResetVerification/>
       </div>
     </main>
   );
