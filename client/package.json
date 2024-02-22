@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier:fix": "prettier --write .",
+    "prettier:check": "prettier --check ."
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -14,6 +16,7 @@
     "@headlessui/react": "^1.7.18",
     "@mui/material": "^5.15.10",
     "next": "^14.1.0",
+    "prettier": "^3.2.5",
     "react": "^18",
     "react-dom": "^18"
   },
