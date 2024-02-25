@@ -4,13 +4,13 @@ const database = require('../database');
 const {hashPassword} = require("../utils/helper");
 const bodyparser = require("body-parser");
 
-
+/*
 router.get("/",(req, res)=>{
     database.execute("select * from users;", function(err, result){
         res.send(result);
     })
 });
-
+*/
 /*
 router.get("/:userID",(req,res)=>{
     try {
@@ -44,6 +44,7 @@ router.get("/exists/:email",(req,res)=>{
     }
 });
 
+/*
 router.get("/info/:email",(req,res)=>{
     try {
         database.execute("select * from users where email=?;",
@@ -115,5 +116,5 @@ router.delete("/:userID",(req,res)=>{
     }
 });
 
-
+*/
 module.exports = router;

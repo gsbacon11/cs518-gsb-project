@@ -15,7 +15,7 @@ router.post("/",(req,res)=>{
                 res.status(200).send({"found": false});
             }else{
                 res.status(200).send({"found": true});
-                sendEmail(req.body.email, "ODU Portal Login", "Temporary Password: " + temp_password);
+                sendEmail(req.body.email, "ODU Portal Password Reset", "Temporary Password: " + temp_password);
             }
         })
     } catch(error){

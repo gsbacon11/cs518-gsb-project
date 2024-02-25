@@ -21,10 +21,7 @@ export default function HomeComponent() {
   const refInputPasswordRetyped = useRef();
 
   const createUser =  async () => {
-    
-
     const data1 = await apiLookupEmail(email);
-    console.log(data1);
     if (data1.found) {
       setEmailError("Email is already in use.");
       refInputEmail.current.style.borderColor = "red";

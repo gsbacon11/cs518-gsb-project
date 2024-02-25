@@ -14,6 +14,16 @@ export default function PasswordReset() {
   const [emailValid , setEmailValid] = useState(true);
   const refInputEmail = useRef();
 
+  const requestPasswordReset =  async () => {
+    var data = await apiPasswordReset(email);
+    if(!data.found){
+      setEmailValid(false);
+      refInputEmail.current.style.borderColor = "red";
+      return;
+    }
+    router.push('/');
+  }
+
   function onPasswordReset(){
     var email_valid = validateEmailString(email);
       if(!email_valid){
@@ -21,14 +31,7 @@ export default function PasswordReset() {
         setEmailValid(false);
         return;
       }
-      var data = apiPasswordReset(email);
-      console.log(data);
-      if(!data.found){
-        setEmailValid(false);
-        refInputEmail.current.style.borderColor = "red";
-        return;
-      }
-      router.push('/');
+      requestPasswordReset();
   }
 
   return (

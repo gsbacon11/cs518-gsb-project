@@ -1,5 +1,6 @@
-export const apiLookupEmail =  async (email) => {
 
+
+export const apiLookupEmail =  async (email) => {
     const res = await fetch(process.env.NEXT_PUBLIC_SERVER_IP + "/user/exists/" + email, {
         method: "GET",
         headers: {
@@ -14,7 +15,7 @@ export const apiSignUp =  async (email, password) => {
     email: email,
     password: password,
   });
-  const res = await fetch("http://localhost:8080/signup/", {
+  const res = await fetch(process.env.NEXT_PUBLIC_SERVER_IP + "/signup/", {
     method: "POST",
     body: formBody,
     headers: {
@@ -50,7 +51,7 @@ export const apiRequestToken =  async (email, password) => {
           "Content-Type": "application/json",
         },
       });
-      return await res.json();
+      return [res.status, await res.json()];
 }
 
 
@@ -63,4 +64,20 @@ export const apiLogin =  async (token) => {
         },
       });
       return await res.json();
+}
+
+export const apiAuthLogin =  async (token, userId, passcodeIn) => {
+  const formBody = JSON.stringify({
+      userID: userId,
+      passcode: passcodeIn
+    });
+  const res = await fetch(process.env.NEXT_PUBLIC_SERVER_IP +  "/login/authenticate-login", {
+      method: "POST",
+      body: formBody,
+      headers: {
+        "Content-Type": "application/json",
+        "token": token
+      },
+    });
+    return [res.status, await res.json()];
 }

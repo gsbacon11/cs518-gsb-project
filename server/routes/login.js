@@ -30,7 +30,6 @@ router.get("/", verifyToken, (req,res) => {
     } catch(error){
         console.log(error.message);
     } 
-
 });
 
 router.post("/",(req,res)=>{
@@ -59,7 +58,7 @@ router.post("/",(req,res)=>{
                         }
                 });
                 }else{
-                    res.status(401).send("Password does not match!");
+                    res.status(401).send([]);
                 }
             }
         })
@@ -68,6 +67,20 @@ router.post("/",(req,res)=>{
     }
 }); 
 
-
+router.post("/authenticate-login", verifyToken, (req,res) => {
+    try {
+        database.execute("select * from users where userID=? and loginID=?;",
+        [req.body.userID, req.body.passcode],
+        function(err, result){
+            if(result==0){
+                res.status(401).send(false);
+            }else{
+                res.status(200).send(true);
+            }
+        })
+    } catch(error){
+        console.log(error.message);
+    } 
+});
 
 module.exports = router;

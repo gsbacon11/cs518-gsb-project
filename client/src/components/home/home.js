@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { useState } from "react"; 
 import  { useRef } from "react";
+import { useCookies } from 'next-client-cookies';
 import styles from './Home.module.css';
 import {validateEmailString, validatePasswordString} from '../common/ui_validation'
 import {ErrorLabel} from '../common/dynamic_labels'
@@ -16,6 +17,7 @@ export default function HomeComponent() {
     const [inputValid , setInputValid] = useState(true);
     const refInputEmail = useRef();
     const refInputPassword = useRef();
+    const cookies = useCookies();
     
     function styleError(){
         refInputEmail.current.style.borderColor = "red";
@@ -34,9 +36,16 @@ export default function HomeComponent() {
             return
         }
         const data1 = await apiRequestToken(email, password);
-        await apiLogin(data1.data.toke);
-        console.log(process.env.NEXT_PUBLIC_SERVER_IP);
-        //router.push('/user');
+        if(data1[0] != 200){
+            setInputValid(false);
+            styleError();
+            return;
+        }
+        await apiLogin(data1[1].data.toke);
+        cookies.set("api_token", data1[1].data.toke);
+        cookies.set("email", data1[1].data.email);
+        cookies.set("userID", data1[1].data.userId);
+        router.push('/authenticate-login');
     }
 
     function onSignIn(){
