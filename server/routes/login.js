@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const database = require("../database");
-const {comparePassword, verifyToken, generateLoginID} = require("../utils/helper");
+const {comparePassword, verifyToken} = require("../utils/helper");
 const jwt = require("jsonwebtoken");
 const {sendEmail} = require("../utils/helper");
 

@@ -13,6 +13,7 @@ app.use(cors({
 app.use('/user', require('./routes/user'));
 app.use('/login', require('./routes/login'));
 app.use('/signup', require('./routes/signup'));
+app.use('/password-reset', require('./routes/password-reset'));
 
 app.listen(port, () =>{
     console.log(`Server is listening on port ${port}`)

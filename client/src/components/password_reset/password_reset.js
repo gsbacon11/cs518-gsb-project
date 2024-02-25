@@ -4,7 +4,8 @@ import { useState } from "react";
 import  { useRef } from "react";
 import styles from '../home/Home.module.css';
 import {validateEmailString} from '../common/ui_validation'
-import {ErrorEmailLabel} from '../common/dynamic_labels'
+import {ErrorLabel} from '../common/dynamic_labels'
+import {apiPasswordReset} from '@/app/api'
 
 export default function PasswordReset() {
 
@@ -15,13 +16,19 @@ export default function PasswordReset() {
 
   function onPasswordReset(){
     var email_valid = validateEmailString(email);
-      setEmailValid(email_valid);
-      if(email_valid){
-        refInputEmail.current.style.borderColor = "var(--silver_reign)";
-          router.push('/password_reset/verification');
-      }else{
+      if(!email_valid){
         refInputEmail.current.style.borderColor = "red";
+        setEmailValid(false);
+        return;
       }
+      var data = apiPasswordReset(email);
+      console.log(data);
+      if(!data.found){
+        setEmailValid(false);
+        refInputEmail.current.style.borderColor = "red";
+        return;
+      }
+      router.push('/');
   }
 
   return (
@@ -30,9 +37,9 @@ export default function PasswordReset() {
                 <div className={styles.mainFormDiv}>
                     <label className={styles.labelFormHeader}>Reset Password</label>
                     <input type="text"  ref={refInputEmail} className={styles.inputText} value={email} onChange={e => setEmail(e.target.value)} placeholder="Email"/>
-                    <div className={styles.divUserError}> {!emailValid && <ErrorEmailLabel/>} </div>
+                    <div className={styles.divUserError}> {!emailValid && <ErrorLabel arg={"Email is not correct. Please try again."}/>} </div>
                     <div className={styles.simpleDivision}></div>
-                    <button type="button" className={styles.mainPageButton} onClick={onPasswordReset}>Continue</button>
+                    <button type="button" className={styles.mainPageButton} onClick={onPasswordReset}>Email Temporary Password</button>
                 </div>
             </div>
     </main>

@@ -16,9 +16,9 @@ router.post("/",(req,res)=>{
         0,
         ],function(err, result){
             if(result.affectedRows==0){
-                res.status(500).send(["Request failed due to internal error. Please try again later."]);
+                res.status(200).send({"success":false, "msg": "Request failed due to internal error. Please try again later."});
             }else{
-                res.status(200).send([]);
+                res.status(200).send({"success":true});
             }
         })
     } catch(error){

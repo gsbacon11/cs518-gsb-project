@@ -24,7 +24,6 @@ export default function HomeComponent() {
 
     const signIn =  async () => {
         const data = await apiLookupEmail(email);
-        console.log(data);
         if(!data.found){
             setInputValid(false);
             styleError();
@@ -35,8 +34,6 @@ export default function HomeComponent() {
             return
         }
         const data1 = await apiRequestToken(email, password);
-        console.log(data1);
-        console.log(data1.data.toke);
         await apiLogin(data1.data.toke);
         console.log(process.env.NEXT_PUBLIC_SERVER_IP);
         //router.push('/user');
@@ -65,7 +62,7 @@ export default function HomeComponent() {
                 <div className={styles.divUserError}> {!inputValid && <ErrorLabel arg={"Email and password combination invalid. Please try again."}/>} </div>
                 <button type="button" className={styles.mainPageButton} onClick={onSignIn}>Log In</button>
                 <div id={styles.divLinkForgotPassword}>
-                    <a href="/password_reset">Forgot password?</a>
+                    <a href="/password-reset">Forgot password?</a>
                 </div>
                 <div className={styles.simpleDivision}></div>
                 <div>
