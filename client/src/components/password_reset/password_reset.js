@@ -21,7 +21,7 @@ export default function PasswordReset() {
       refInputEmail.current.style.borderColor = "red";
       return;
     }
-    router.push('/');
+    router.push('/account-status/confirm-password-reset');
   }
 
   function onPasswordReset(){
@@ -40,9 +40,9 @@ export default function PasswordReset() {
                 <div className={styles.mainFormDiv}>
                     <label className={styles.labelFormHeader}>Reset Password</label>
                     <input type="text"  ref={refInputEmail} className={styles.inputText} value={email} onChange={e => setEmail(e.target.value)} placeholder="Email"/>
-                    <div className={styles.divUserError}> {!emailValid && <ErrorLabel arg={"Email is not correct. Please try again."}/>} </div>
+                    <div className={styles.divUserError}> {!emailValid && <ErrorLabel arg={"Email is incorrect. Please try again."}/>} </div>
                     <div className={styles.simpleDivision}></div>
-                    <button type="button" className={styles.mainPageButton} onClick={onPasswordReset}>Email Temporary Password</button>
+                    <button type="button" className={styles.mainPageButton} onClick={onPasswordReset}>Submit</button>
                 </div>
             </div>
     </main>

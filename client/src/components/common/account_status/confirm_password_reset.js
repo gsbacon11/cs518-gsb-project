@@ -10,7 +10,7 @@ export default function StatusAccountCreation() {
             <div className={styles.mainFormDiv}>
               <label className={styles.labelFormHeader}>Password Reset</label>
               <div className='py-3'>
-                <a>Your password has been changed!</a>
+                <a>A temporary password has been sent to your email!</a>
               </div>
               <div className={styles.simpleDivision}></div>
               <div>

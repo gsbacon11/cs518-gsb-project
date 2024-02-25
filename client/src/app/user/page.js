@@ -1,12 +1,13 @@
+"use client";
 import Image from "next/image";
 import styles from '@/app/PreSignIn.module.css';
+import AdminView from "@/components/user/admin_view";
 
-//"use client";
-export default function AccountSettings() {
+export default function MainViewPage() {
   return (
     <main>
       <div id={styles.divMainVert}>
-        <p>jdiwjdiwjidjwid</p>
+        <AdminView/>
       </div>
     </main>
   );

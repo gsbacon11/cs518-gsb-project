@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const database = require('../database');
-const {hashPassword} = require("../utils/helper");
-const bodyparser = require("body-parser");
+const {verifyToken} = require("../utils/helper");
 
 /*
 router.get("/",(req, res)=>{
@@ -42,6 +41,42 @@ router.get("/exists/:email",(req,res)=>{
     } catch(error){
         console.log(error.message);
     }
+});
+
+router.get("/admin/account-requests", (req,res)=>{
+    try {
+        database.execute("select userID, email, isApproved from users where isApproved = false"
+    ,function(err, result){
+            if(result==0){
+                res.status(200).send(result);
+            }else{  
+                res.status(200).send(result);
+            }
+        })
+    } catch(error){
+        console.log(error.message);
+    }
+});
+
+router.post("/admin/approve-users", (req,res) => {
+    try {
+        console.log(req.body.userIDs.length);
+        for(var i = 0; i < 1; ++i){
+            database.execute("update users set isApproved=true where userID=?", [req.body.userIDs[i]]);
+        }
+        res.status(200).send([]);
+        /*database.execute("select * from users where userID=? and loginID=?;",
+        [req.body.userID, req.body.passcode],
+        function(err, result){
+            if(result==0){
+                res.status(401).send(false);
+            }else{
+                res.status(200).send(true);
+            }
+        })*/
+    } catch(error){
+        console.log(error.message);
+    } 
 });
 
 /*

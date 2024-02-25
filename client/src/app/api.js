@@ -81,3 +81,29 @@ export const apiAuthLogin =  async (token, userId, passcodeIn) => {
     });
     return [res.status, await res.json()];
 }
+
+export const apiAdminGetRequestedUsers =  async (token) => {
+  const res = await fetch(process.env.NEXT_PUBLIC_SERVER_IP +  "/user/admin/account-requests", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "token": token
+      },
+    });
+    return await res.json();
+}
+
+export const apiAdminApproveUsers =  async (token, userIds) => {
+  const formBody = JSON.stringify({
+      userIDs: userIds,
+    });
+  const res = await fetch(process.env.NEXT_PUBLIC_SERVER_IP +  "/user/admin/approve-users", {
+      method: "POST",
+      body: formBody,
+      headers: {
+        "Content-Type": "application/json",
+        "token": token
+      },
+    });
+    return [res.status, await res.json()];
+}
