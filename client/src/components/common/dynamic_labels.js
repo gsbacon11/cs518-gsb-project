@@ -9,3 +9,7 @@ export function ErrorPasswordLabel(){
 export function ErrorPasswordsMismatchLabel(){
     return(<label>Passwords do not match. Please try again.</label>);
 }
+
+export const ErrorLabel = ({arg}) => {
+    return(<label>{arg}</label>);
+}

@@ -56,5 +56,5 @@ module.exports = {
     hashPassword,
     comparePassword,
     verifyToken,
-    sendEmail
+    sendEmail,
 };

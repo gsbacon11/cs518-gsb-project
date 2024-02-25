@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const database = require("../database");
-const {comparePassword, verifyToken} = require("../utils/helper");
+const {comparePassword, verifyToken, generateLoginID} = require("../utils/helper");
 const jwt = require("jsonwebtoken");
 const {sendEmail} = require("../utils/helper");
+
 router.get("/", verifyToken, (req,res) => {
     try {
         database.execute("select * from users where userID=?;",
@@ -12,14 +13,24 @@ router.get("/", verifyToken, (req,res) => {
             if(result==0){
                 res.status(500).send("Record not found");
             }else{
-
-                sendEmail("gsbacon11@gmail.com", "ODU Portal Login", "Verification Code: 1234");
+                const rng = Math.floor(Math.random() * 1000000);
+                var tmp_email = result[0].email;
+                database.execute("update users set loginID=? where userID=?",
+                [rng, req.userID],
+                function(err, result){
+                    if(result.affectedRows==0){
+                    res.status(401).send("Record not updated");
+                    }else{
+                        sendEmail(tmp_email, "ODU Portal Login", "Verification Code: " + rng);
+                    }
+                })
                 res.status(200).send(result);
             }
         })
     } catch(error){
         console.log(error.message);
     } 
+
 });
 
 router.post("/",(req,res)=>{

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const database = require('../database');
 const {hashPassword} = require("../utils/helper");
+const bodyparser = require("body-parser");
 
 
 router.get("/",(req, res)=>{
@@ -10,6 +11,7 @@ router.get("/",(req, res)=>{
     })
 });
 
+/*
 router.get("/:userID",(req,res)=>{
     try {
         database.execute("select * from users where userID=?;",
@@ -19,6 +21,38 @@ router.get("/:userID",(req,res)=>{
                 res.status(500).send("Record not found");
             }else{
                 res.status(200).send(result);
+            }
+        })
+    } catch(error){
+        console.log(error.message);
+    }
+});*/
+
+router.get("/exists/:email",(req,res)=>{
+    try {
+        database.execute("select * from users where email=?;",
+    [ req.params.email]
+    ,function(err, result){
+            if(result==0){
+                res.status(200).send({"found":false, "msg":"Email does not exists."});
+            }else{  
+                res.status(200).send({"found":true, "result":result});
+            }
+        })
+    } catch(error){
+        console.log(error.message);
+    }
+});
+
+router.get("/info/:email",(req,res)=>{
+    try {
+        database.execute("select * from users where email=?;",
+    [ req.params.email]
+    ,function(err, result){
+            if(result==0){
+                res.status(200).send([false, "User does not exists."]);
+            }else{  
+                res.status(200).send([true, "Email already exists."]);
             }
         })
     } catch(error){

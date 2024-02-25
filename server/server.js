@@ -12,6 +12,7 @@ app.use(cors({
 // Routes
 app.use('/user', require('./routes/user'));
 app.use('/login', require('./routes/login'));
+app.use('/signup', require('./routes/signup'));
 
 app.listen(port, () =>{
     console.log(`Server is listening on port ${port}`)
