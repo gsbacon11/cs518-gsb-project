@@ -28,18 +28,18 @@ export default function AdminView(){
     }
     function onCheckboxChnage(e,i){
         data[i].isApproved=e.target.checked;
-        console.log(data);
     }
 
     function onSubmit(){
-        var approved_userIDs = []
+        var approved_userIDs = [];
+        var approved_emails = [];
         for(var i =0; i < data.length; ++i){
             if(data[i].isApproved == true){
                 approved_userIDs.push(data[i].userID);
-                new_data.splice(i, 1);
+                approved_emails.push(data[i].email);
             }
         }
-        apiAdminApproveUsers(cookies.get("api_token"), approved_userIDs);
+        apiAdminApproveUsers(cookies.get("api_token"), approved_userIDs, approved_emails);
         window.location.reload(false);
     }
 
@@ -50,7 +50,7 @@ export default function AdminView(){
                 
                     <label className={styles.labelFormHeader}>Account Managment</label>
                     <div  className={styles.simpleDivision}></div>
-                    <div> {!noRequestedUsers &&
+                    <div> {!noRequestedUsers ?
                     <table>
                     <thead>
                         <tr>
@@ -76,8 +76,9 @@ export default function AdminView(){
                             )
                         }
                     </tbody>
-                    </table>}
-                    {noRequestedUsers && <label>No new user requests!</label>}
+                    </table> :
+                    <label>No new user requests!</label>
+                    }
                     </div>
 
                     <div  className={styles.simpleDivision}></div>

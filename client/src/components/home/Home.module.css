@@ -1,5 +1,4 @@
 .mainForm {
-    box-shadow: 5px 4px 4px 1px var(--silver_reign);
     margin: auto;
     width: 500px;
     padding: 10px;
@@ -85,4 +84,14 @@
     text-align: left;
     margin-left: 27px;
     margin-bottom: 10px;
+}
+
+.mainFormUser {
+    margin: auto;
+    width: 50%;
+    padding-top: 10px;
+    background-color: var(--vanilla_icecream_cake);
+    position: relative;
+    border-radius: 10px;
+    box-sizing: border-box;
 }

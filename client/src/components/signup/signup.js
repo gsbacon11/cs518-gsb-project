@@ -9,12 +9,12 @@ import {apiLookupEmail, apiSignUp} from '@/app/api'
 
 export default function HomeComponent() {
   const router = useRouter();
-  const [email , setEmail] = useState('gsbacon11@gmail.com');
+  const [email , setEmail] = useState('');
   const [emailValid , setEmailValid] = useState(true);
   const [emailError , setEmailError] = useState('');
-  const [password , setPassword] = useState('gsbacon11@gmail.com');
+  const [password , setPassword] = useState('');
   const [passwordValid , setPasswordValid] = useState(true);
-  const [passwordRetyped , setPasswordRetyped] = useState('gsbacon11@gmail.com');
+  const [passwordRetyped , setPasswordRetyped] = useState('');
   const [passwordsMatch , setPasswordsMatch] = useState(true);
   const refInputEmail = useRef();
   const refInputPassword = useRef();

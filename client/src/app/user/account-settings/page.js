@@ -1,15 +1,16 @@
 
 //"use client";
 
-import AccountSettingSidebar from "@/components/user/account_setting_sidebar"
+import AccountSetting from "@/components/user/account_setting"
+import Header from "@/components/common/header";
 
 export default function AccountPage() {
   return (
     <main>
-    <div className={"flex items-start justify-between"}>
-      <AccountSettingSidebar/>
+      <Header/>
+      <div className={"flex items-start justify-between"}>
       <main className="w-full h-full">
-      <button>lol</button>
+      <AccountSetting/>
       </main>
     </div>
     </main>

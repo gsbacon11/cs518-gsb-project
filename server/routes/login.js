@@ -21,7 +21,7 @@ router.get("/", verifyToken, (req,res) => {
                     if(result.affectedRows==0){
                     res.status(401).send("Record not updated");
                     }else{
-                        sendEmail(tmp_email, "ODU Portal Login", "Verification Code: " + rng);
+                        sendEmail(tmp_email, "ODU Course Advising Portal Login", "Verification Code: " + rng);
                     }
                 })
                 res.status(200).send(result);
@@ -54,7 +54,9 @@ router.post("/",(req,res)=>{
                         data: {
                             toke: token,
                             email: req.body.email,
-                            userId: result[0].userID
+                            userID: result[0].userID,
+                            isAdmin: result[0].isAdmin,
+                            passwordReset: result[0].passwordReset
                         }
                 });
                 }else{

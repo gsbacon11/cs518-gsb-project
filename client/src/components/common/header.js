@@ -6,42 +6,6 @@ import { Menu } from '@headlessui/react'
 
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  function MenuComponent(){
-    return(
-        <Paper sx={{width: 320, maxWidth: '100%'}}>
-            <MenuList>
-                <MenuItem>
-                <Typography variant='body1' color='text.secondary'> Idk </Typography>
-                </MenuItem>
-
-            </MenuList>
-
-        </Paper>
-    );
-  }
-
-    function MenuDropdown() {
-        return(
-            <Menu>
-                 <Menu.Button>Account</Menu.Button>
-                <Menu.Items>
-                    <Menu.Item>
-                    {({ active }) => (
-                <a
-                className={`${active && 'bg-blue-500'}`}
-                href="/account-settings"
-                >
-                Account settings
-                </a>
-          )}
-                    </Menu.Item>
-                </Menu.Items>
-            </Menu>
-        )
-    }
-
 
   return (
     <header className="bg-white">
@@ -50,14 +14,12 @@ export default function Header() {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <img
-              className="h-8 w-auto"
+              className="h-10 w-auto"
               src="/old-dominion-monarchs.svg"
               alt=""
             />
-          </a>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -67,7 +29,8 @@ export default function Header() {
           </button>
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
-            <a href="/user/account-settings">Account</a>
+            <a href="/user/">Home</a>
+            <a href="/user/account-settings">Settings</a>
         </Popover.Group>
       </nav>
     </header>

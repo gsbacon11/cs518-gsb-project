@@ -2,20 +2,23 @@
 import { useRouter } from 'next/navigation';
 import { useState } from "react"; 
 import  { useRef } from "react";
+import { useCookies } from 'next-client-cookies';
 import styles from '../home/Home.module.css';
+import {apiPasswordResetOnLogin} from '@/app/api';
 import {validatePasswordString} from '../common/ui_validation'
 import {ErrorPasswordLabel, ErrorPasswordsMismatchLabel} from '../common/dynamic_labels'
 
-export default function PasswordResetVerification() {
+export default function PasswordResetOnLogin() {
   const router = useRouter();
-  const [password , setPassword] = useState('gsbacon11@gmail.com');
+  const [password , setPassword] = useState('');
   const [passwordValid , setPasswordValid] = useState(true);
-  const [passwordRetyped , setPasswordRetyped] = useState('gsbacon11@gmail.com');
+  const [passwordRetyped , setPasswordRetyped] = useState('');
   const [passwordsMatch , setPasswordsMatch] = useState(true);
   const refInputPassword = useRef();
   const refInputPasswordRetyped = useRef();
+  const cookies = useCookies();
 
-  function onSignUp(){
+  function onConfirm(){
     var password_valid = validatePasswordString(password);
     setPasswordValid(password_valid);
     var passwords_match = password == passwordRetyped;
@@ -31,7 +34,8 @@ export default function PasswordResetVerification() {
       refInputPasswordRetyped.current.style.borderColor = "var(--silver_reign)";
     }
     if(password_valid && passwords_match){
-        router.push('/account-status/confirm-password-reset');
+       apiPasswordResetOnLogin(cookies.get("api_token"), cookies.get("userID"), password);
+        router.push('/user');
     }
 }
 
@@ -41,11 +45,11 @@ export default function PasswordResetVerification() {
             <div className={styles.mainFormDiv}>
                     <label className={styles.labelFormHeader}>Create New Password</label>
                     <input type="password" ref={refInputPassword} className={styles.inputText} value={password} onChange={e => setPassword(e.target.value)} placeholder="Password"/>
-                    <div className={styles.divUserError}> {!passwordValid && <ErrorPasswordLabel/>} </div>
+                    <div className={styles.divUserError}> {!passwordValid && <label>Password must be greater than 7 characters with no spaces.</label>} </div>
                     <input type="password" ref={refInputPasswordRetyped} className={styles.inputText} value={passwordRetyped} onChange={e => setPasswordRetyped(e.target.value)} placeholder="Retype Password"/>
-                    <div className={styles.divUserError}> {!passwordsMatch && <ErrorPasswordsMismatchLabel/>} </div>
+                    <div className={styles.divUserError}> {!passwordsMatch && <label>Passwords do not match. Please try again.</label>} </div>
                     <div  className={styles.simpleDivision}></div>
-                    <button type="button" className={styles.mainPageButton}  onClick={onSignUp}>Confirm New Password</button>
+                    <button type="button" className={styles.mainPageButton}  onClick={onConfirm}>Confirm</button>
                 </div>
             </div>
     </main>

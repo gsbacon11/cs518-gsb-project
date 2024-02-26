@@ -10,7 +10,7 @@ import {apiPasswordReset} from '@/app/api'
 export default function PasswordReset() {
 
   const router = useRouter();
-  const [email , setEmail] = useState('gsbacon11@gmail.com');
+  const [email , setEmail] = useState('');
   const [emailValid , setEmailValid] = useState(true);
   const refInputEmail = useRef();
 

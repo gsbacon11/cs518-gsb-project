@@ -39,6 +39,22 @@ export const apiPasswordReset =  async (email) => {
     return await res.json();
 }
 
+export const apiPasswordResetOnLogin =  async (token, userId, pwd) => {
+  const formBody = JSON.stringify({
+      userID: userId,
+      password: pwd
+    });
+  const res = await fetch(process.env.NEXT_PUBLIC_SERVER_IP +  "/password-reset/onlogin", {
+      method: "POST",
+      body: formBody,
+      headers: {
+        "Content-Type": "application/json",
+        "token": token
+      },
+    });
+    return await res.json();
+}
+
 export const apiRequestToken =  async (email, password) => {
     const formBody = JSON.stringify({
         email: email,
@@ -93,9 +109,10 @@ export const apiAdminGetRequestedUsers =  async (token) => {
     return await res.json();
 }
 
-export const apiAdminApproveUsers =  async (token, userIds) => {
+export const apiAdminApproveUsers =  async (token, userIds, emailsIn) => {
   const formBody = JSON.stringify({
       userIDs: userIds,
+      emails: emailsIn
     });
   const res = await fetch(process.env.NEXT_PUBLIC_SERVER_IP +  "/user/admin/approve-users", {
       method: "POST",

@@ -46,8 +46,6 @@ function sendEmail(email, subject, body){
     transport.sendMail(mailOptions, function(err,result){
         if(err){
             console.log(err);
-        }else{
-            console.log("email sent");
         }
     });
 }

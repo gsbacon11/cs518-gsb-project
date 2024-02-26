@@ -11,9 +11,9 @@ import {apiLookupEmail, apiRequestToken, apiLogin} from '@/app/api'
 
 export default function HomeComponent() {
     const router = useRouter();
-    const [email , setEmail] = useState('gsbacon11@gmail.com');
+    const [email , setEmail] = useState('');
     //const [emailValid , setEmailValid] = useState(true);
-    const [password , setPassword] = useState('gsbacon11@gmail.com');
+    const [password , setPassword] = useState('');
     const [inputValid , setInputValid] = useState(true);
     const refInputEmail = useRef();
     const refInputPassword = useRef();
@@ -35,6 +35,7 @@ export default function HomeComponent() {
             router.push('/account-status');
             return
         }
+
         const data1 = await apiRequestToken(email, password);
         if(data1[0] != 200){
             setInputValid(false);
@@ -44,7 +45,9 @@ export default function HomeComponent() {
         await apiLogin(data1[1].data.toke);
         cookies.set("api_token", data1[1].data.toke);
         cookies.set("email", data1[1].data.email);
-        cookies.set("userID", data1[1].data.userId);
+        cookies.set("userID", data1[1].data.userID);
+        cookies.set("isAdmin", data1[1].data.isAdmin);
+        cookies.set("passwordReset", data1[1].data.passwordReset);
         router.push('/authenticate-login');
     }
 
@@ -64,6 +67,7 @@ export default function HomeComponent() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
         <div className={styles.mainForm}>
             <div className={styles.mainFormDiv}>
+                <div className="pt-2"></div>
                 <input type="text" ref={refInputEmail} className={styles.inputText} value={email} onChange={e => setEmail(e.target.value)} placeholder="Email"/>
                 <div className={styles.divUserError}></div>
                 <input type="password" ref={refInputPassword} className={styles.inputText} value={password} onChange={e => setPassword(e.target.value)} placeholder="Password"/>

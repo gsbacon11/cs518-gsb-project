@@ -17,13 +17,16 @@ export default function AuthenticateLogin() {
 
   const authLogin =  async () => {
     const data = await apiAuthLogin(cookies.get("api_token"), cookies.get("userID"), passcode);
-    console.log(data);
     if(!data[1]){
       refInput.current.style.borderColor = "red";
       setInputValid(false);
       return;
     }
-    router.push('/user');
+    if(cookies.get("passwordReset") == 0){
+      router.push('/user');
+    } else {
+      router.push('/user/onlogin-password-reset');
+    }
   }
 
   return (
