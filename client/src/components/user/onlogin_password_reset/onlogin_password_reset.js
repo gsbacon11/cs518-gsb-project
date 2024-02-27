@@ -2,53 +2,26 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useRef } from "react";
+import { useCookies } from "next-client-cookies";
 import styles from "@/components/common/Common.module.css";
-import {
-  validateEmailString,
-  validatePasswordString,
-} from "../common/ui_validation";
-import { ErrorLabel } from "../common/dynamic_labels";
-import { apiLookupEmail, apiSignUp } from "@/app/api";
+import { apiPasswordResetOnLogin } from "@/app/api";
+import { validatePasswordString } from "../../common/ui_validation";
 
-export default function HomeComponent() {
+export default function PasswordResetOnLogin() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [emailValid, setEmailValid] = useState(true);
-  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(true);
   const [passwordRetyped, setPasswordRetyped] = useState("");
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-  const refInputEmail = useRef();
   const refInputPassword = useRef();
   const refInputPasswordRetyped = useRef();
+  const cookies = useCookies();
 
-  const createUser = async () => {
-    const data1 = await apiLookupEmail(email);
-    if (data1.found) {
-      setEmailError("Email is already in use.");
-      refInputEmail.current.style.borderColor = "red";
-      setEmailValid(false);
-      return;
-    }
-
-    await apiSignUp(email, password);
-    router.push("/account-status");
-  };
-
-  function onSignUp() {
-    var email_valid = validateEmailString(email);
-    setEmailValid(email_valid);
+  function onConfirm() {
     var password_valid = validatePasswordString(password);
     setPasswordValid(password_valid);
     var passwords_match = password == passwordRetyped;
     setPasswordsMatch(passwords_match);
-    if (!email_valid) {
-      setEmailError("Please enter a valid email.");
-      refInputEmail.current.style.borderColor = "red";
-    } else {
-      refInputEmail.current.style.borderColor = "var(--silver_reign)";
-    }
     if (!password_valid) {
       refInputPassword.current.style.borderColor = "red";
     } else {
@@ -59,8 +32,13 @@ export default function HomeComponent() {
     } else {
       refInputPasswordRetyped.current.style.borderColor = "var(--silver_reign)";
     }
-    if (email_valid && password_valid && passwords_match) {
-      createUser();
+    if (password_valid && passwords_match) {
+      apiPasswordResetOnLogin(
+        cookies.get("api_token"),
+        cookies.get("userID"),
+        password,
+      );
+      router.push("/user");
     }
   }
 
@@ -68,19 +46,7 @@ export default function HomeComponent() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className={styles.mainForm}>
         <div className={styles.mainFormDiv}>
-          <label className={styles.labelFormHeader}>Create Account</label>
-          <input
-            type="text"
-            ref={refInputEmail}
-            className={styles.inputText}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-          />
-          <div className={styles.divUserError}>
-            {" "}
-            {!emailValid && <ErrorLabel arg={emailError} />}{" "}
-          </div>
+          <label className={styles.labelFormHeader}>Create New Password</label>
           <input
             type="password"
             ref={refInputPassword}
@@ -92,11 +58,9 @@ export default function HomeComponent() {
           <div className={styles.divUserError}>
             {" "}
             {!passwordValid && (
-              <ErrorLabel
-                arg={
-                  "Password must be greater than 7 characters with no spaces."
-                }
-              />
+              <label>
+                Password must be greater than 7 characters with no spaces.
+              </label>
             )}{" "}
           </div>
           <input
@@ -110,16 +74,16 @@ export default function HomeComponent() {
           <div className={styles.divUserError}>
             {" "}
             {!passwordsMatch && (
-              <ErrorLabel arg={"Passwords do not match. Please try again."} />
+              <label>Passwords do not match. Please try again.</label>
             )}{" "}
           </div>
           <div className={styles.simpleDivision}></div>
           <button
             type="button"
             className={styles.mainPageButton}
-            onClick={onSignUp}
+            onClick={onConfirm}
           >
-            Sign up
+            Confirm
           </button>
         </div>
       </div>

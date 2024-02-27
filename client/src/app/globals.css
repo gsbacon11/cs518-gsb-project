@@ -8,18 +8,18 @@
   --background-end-rgb: 255, 255, 255;
 
   --moncarch_blue: #003057;
-  --silver_reign: #828A8F;
-  --sky_blue:      #98C5EA;
-  --carrier_metal: #404A5A;
-  --midnight: #0A192D;
-  --coastal_storm: #ACAAB4;
-  --azure: #4248DD;
-  --denim: #3658AD;
-  --auminium: #E1EAF0;
-  --barry_blue: #729BE6;
-  --vanilla_icecream_cake: #FFFFFF;
-  --evening_breeze: #63B9D6;
-  --seafoam: #20AEC5;
+  --silver_reign: #828a8f;
+  --sky_blue: #98c5ea;
+  --carrier_metal: #404a5a;
+  --midnight: #0a192d;
+  --coastal_storm: #acaab4;
+  --azure: #4248dd;
+  --denim: #3658ad;
+  --auminium: #e1eaf0;
+  --barry_blue: #729be6;
+  --vanilla_icecream_cake: #ffffff;
+  --evening_breeze: #63b9d6;
+  --seafoam: #20aec5;
 }
 
 @media (prefers-color-scheme: dark) {
