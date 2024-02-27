@@ -1,5 +1,5 @@
 
-./client contains front end (react/nextjs)
-./server contains back end (node/express)
-./database contains database (mysql)
+<p>./client contains front end (react/nextjs)<br>
+./server contains back end (node/express)<br>
+./database contains database (mysql)<br></p>
     
