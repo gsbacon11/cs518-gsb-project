@@ -1,0 +1,5 @@
+.DS_Store
+
+s518-gsb-project.code-workspace
+
+/server/node_modules/*
