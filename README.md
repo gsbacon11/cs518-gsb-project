@@ -1,7 +1,5 @@
-Project uses 
 
-NodeJs
-    Expess (NodeJs framework)
-MySQL
-React, HTML, CSS
+./client contains front end (react/nextjs)
+./server contains back end (node/express)
+./database contains database (mysql)
     
