@@ -66,7 +66,7 @@ export default function AdminView() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((val, i) => (
+                  {data.products.map((val, i) => (
                     <tr key={i}>
                       <th>
                         <label>{val.email}</label>

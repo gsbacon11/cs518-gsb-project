@@ -139,3 +139,35 @@ export const apiAdminApproveUsers = async (token, userIds, emailsIn) => {
   );
   return [res.status, await res.json()];
 };
+
+export const apiAdminGetCourses = async (token) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/courses",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiAdminUpdateCourses = async (token, courses) => {
+  const formBody = JSON.stringify({
+    courses
+  });
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/update-courses",
+    {
+      method: "POST",
+      body: formBody,
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return [res.status, await res.json()];
+};
