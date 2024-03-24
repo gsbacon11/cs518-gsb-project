@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
   import styles from "@/components/common/Common.module.css";
   import { apiAdminGetCourses, apiGetCourseLevels, apiGetPrereqLevels, apiGetTerms, apiSubmitSheet } from "@/app/api";
   import { useCookies } from "next-client-cookies";

@@ -237,4 +237,18 @@ export const apiSubmitSheet = async (token, userIDIn, termLastIn, termCurrentIn,
   return [res.status, await res.json()];
 };
 
+export const apiGetSheetsSatus = async (token, userID) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/sheets-status/" + userID,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
 

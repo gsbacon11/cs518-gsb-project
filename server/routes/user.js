@@ -84,6 +84,22 @@ router.post("/submit-sheet", verifyToken, (req, res) => {
   }
 });
 
+router.get("/sheets-status/:userID", verifyToken, (req, res) => {
+  try {
+    database.execute(
+      "select date, termCurrent, status from sheets where userID=?;",
+      [req.params.userID],
+      function (err, result) {
+        res.status(200).send(result);
+      },
+    );
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).send([]);
+  }
+});
+
+
 router.get("/admin/account-requests", verifyToken, (req, res) => {
   try {
     database.execute(

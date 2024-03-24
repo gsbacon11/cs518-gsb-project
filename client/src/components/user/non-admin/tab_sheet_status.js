@@ -1,11 +1,11 @@
 "use client";
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import {
   MaterialReactTable,
   useMaterialReactTable,
 } from 'material-react-table';
   import styles from "@/components/common/Common.module.css";
-  import { apiAdminGetCourses, apiAdminUpdateCourses } from "@/app/api";
+  import { apiGetSheetsSatus } from "@/app/api";
   import { useCookies } from "next-client-cookies";
   
 
@@ -15,18 +15,20 @@ export default function SheetStatus() {
   const cookies = useCookies();
   const [data, setData] = useState([]);
 
-  const onLoad = async () => {
-    const data1 = await apiAdminGetCourses(cookies.get("api_token"));
-    //console.log(data1)
+  useEffect(() => {
+    onEffect();
+  })
+
+  const onEffect = async () => {
+    const data1 = await apiGetSheetsSatus(cookies.get("api_token"), cookies.get("userID"));
     if (data1.length == 0) {
       return;
     }
+    data1.forEach((sheet)=> {
+      sheet.date = sheet.date.split('T')[0]
+    })
     setData(data1);
   };
-  if (reloadUsers) {
-    //onLoad();
-    reloadUsers = false;
-  }
 
     const columns = useMemo(
         () => [
@@ -36,7 +38,7 @@ export default function SheetStatus() {
             size: 150,
           },
           {
-            accessorKey: 'term',
+            accessorKey: 'termCurrent',
             header: 'Term',
             size: 150,
           },
