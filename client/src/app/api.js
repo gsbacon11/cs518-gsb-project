@@ -171,3 +171,47 @@ export const apiAdminUpdateCourses = async (token, courses) => {
   );
   return [res.status, await res.json()];
 };
+
+export const apiGetTerms = async (token) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/terms",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiGetPrereqLevels = async (token) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/levels-prereq",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiGetCourseLevels = async (token) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/levels-courses",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+

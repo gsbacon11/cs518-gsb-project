@@ -31,17 +31,17 @@ export default function SheetStatus() {
     const columns = useMemo(
         () => [
           {
-            accessorKey: 'level', 
+            accessorKey: 'date', 
             header: 'Date',
             size: 150,
           },
           {
-            accessorKey: 'courseName',
+            accessorKey: 'term',
             header: 'Term',
             size: 150,
           },
           {
-            accessorKey: 'courseName',
+            accessorKey: 'status',
             header: 'Status',
             size: 150,
           },
@@ -57,7 +57,7 @@ export default function SheetStatus() {
     enableRowVirtualization: true,
     positionActionsColumn: 'last',
   });
-      return (<p>lol</p>); //<MaterialReactTable table={table}/>
+      return (<MaterialReactTable table={table}/>); 
 
       
 };

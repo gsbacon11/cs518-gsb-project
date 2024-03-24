@@ -22,6 +22,49 @@ router.get("/exists/:email", (req, res) => {
   }
 });
 
+router.get("/terms", verifyToken, (req, res) => {
+  try {
+    database.execute(
+      "select * from terms",
+      function (err, result) {
+        res.status(200).send(result);
+      },
+    );
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).send([]);
+  }
+});
+
+router.get("/levels-prereq", verifyToken, (req, res) => {
+  try {
+    database.execute(
+      "select DISTINCT level FROM courses WHERE isPrereq is true",
+      function (err, result) {
+        res.status(200).send(result);
+      },
+    );
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).send([]);
+  }
+});
+
+router.get("/levels-courses", verifyToken, (req, res) => {
+  try {
+    
+    database.execute(
+      "select DISTINCT level FROM courses WHERE isPrereq is false",
+      function (err, result) {
+        res.status(200).send(result);
+      },
+    );
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).send([]);
+  }
+});
+
 router.get("/admin/account-requests", verifyToken, (req, res) => {
   try {
     database.execute(

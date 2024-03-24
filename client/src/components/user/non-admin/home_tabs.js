@@ -63,6 +63,7 @@ export default function BasicTabs() {
       <TabSheetStatus/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
+        <TabSheetCreation/>
       </CustomTabPanel>
     </Box>
   );
