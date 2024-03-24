@@ -214,4 +214,27 @@ export const apiGetCourseLevels = async (token) => {
   return await res.json();
 };
 
+export const apiSubmitSheet = async (token, userIDIn, termLastIn, termCurrentIn, gpaIn, preReqsIn, coursesIn) => {
+  const formBody = JSON.stringify({
+    userID: userIDIn,
+    termLast: termLastIn,
+    termCurrent: termCurrentIn,
+    gpa: gpaIn,
+    preReqs: preReqsIn,
+    courses: coursesIn
+  });
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/submit-sheet",
+    {
+      method: "POST",
+      body: formBody,
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return [res.status, await res.json()];
+};
+
 

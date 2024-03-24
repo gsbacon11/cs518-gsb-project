@@ -65,6 +65,25 @@ router.get("/levels-courses", verifyToken, (req, res) => {
   }
 });
 
+router.post("/submit-sheet", verifyToken, (req, res) => {
+  try {
+      database.execute("insert into sheets (userID, termCurrent, termLast, gpa) VALUES (?, ? ,?, ?);",
+      [req.body.userID, req.body.termCurrent, req.body.termLast, req.body.gpa],
+      function (err, result) {
+        const allCourses = req.body.preReqs.concat(req.body.courses)
+        allCourses.forEach(course => {
+          database.execute("insert into sheets2courses (sheetID, courseName) VALUES (?, ?);",
+        [result.insertId, course.Course],
+        )
+      })
+      })
+    res.status(200).send([]);
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).send([]);
+  }
+});
+
 router.get("/admin/account-requests", verifyToken, (req, res) => {
   try {
     database.execute(

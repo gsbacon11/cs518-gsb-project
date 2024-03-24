@@ -1,49 +1,53 @@
 "use client";
 import { useMemo, useState } from 'react';
   import styles from "@/components/common/Common.module.css";
-  import { apiAdminGetCourses, apiGetCourseLevels, apiGetPrereqLevels, apiGetTerms } from "@/app/api";
+  import { apiAdminGetCourses, apiGetCourseLevels, apiGetPrereqLevels, apiGetTerms, apiSubmitSheet } from "@/app/api";
   import { useCookies } from "next-client-cookies";
   import Select from "react-dropdown-select";
   
 
 var reloadUsers = true;
 
+function LevelCourseRow({allOptions, index, optionsLevels, selection, setSelection}){
+    const [optionsCourse, setOptionsCourse] = useState([])
+    const [selectedLevel, setSelectedLevel] = useState([])
+    const [selectedCourse, setSelectedCourse] = useState([])
 
-function PreRow({allPrereqs, index, prereqOptionsLevelLoaded}){
-
-    console.log(prereqOptionsLevelLoaded)
-    const [prereqOptionsLevel, setPrereqOptionsLevel] = useState([]) //{level: "level"}
-    const [prereqOptionsCourse, setPrereqOptionsCourse] = useState([])
-
-    function prereqLevelChanged(values){
-        console.log(allPrereqs)
-        var filtered = []
-        for(var i = 0; i < allPrereqs.length; ++i){
-            if(allPrereqs[i].level == values[0].level) filtered.push(allPrereqs[i])
-        }
-        console.log(filtered)
-        setPrereqOptionsCourse(filtered)
+    function updateSelection(level, course){
+        selection[index] = {Level: level, Course: course}
+        setSelection(selection)
+        //setSelection([...selection, {i: index, l: level, c: course}])
     }
-    function setValues(val){
-        console.log("inside")
+    function prereqLevelChanged(value){
+        setSelectedLevel(value[0].level)
+        updateSelection(value[0].level, selectedCourse)
+        var filtered = []
+        for(var i = 0; i < allOptions.length; ++i){
+            if(allOptions[i].level == value[0].level) filtered.push(allOptions[i])
+        }
+        setOptionsCourse(filtered)
+    }
+    function setValues(value){
+        setSelectedCourse(value[0].courseName)
+        updateSelection(selectedLevel, value[0].courseName)
     }
     return(
         <div key={index} className="text-left pb-5 flex flex-row">
         <label className='text-2xl pl-5'> Level </label>
         <Select
-            options={prereqOptionsLevelLoaded}
+            options={optionsLevels}
             labelField="level"
             valueField="level"
             className='text-2xl pl-5'
-            onChange={(values) => prereqLevelChanged(values)}
+            onChange={(value) => prereqLevelChanged(value)}
         />
         <label className='text-2xl pl-5'> Course </label>
         <Select
-            options={prereqOptionsCourse}
+            options={optionsCourse}
             labelField="courseName"
             valueField="courseName"
             className='text-2xl pl-5'
-            onChange={(values) => setValues(values)}
+            onChange={(value) => setValues(value)}
         />
         </div>
     )
@@ -58,13 +62,18 @@ export default function SheetCreation() {
   const [lastTerm, setLastTerm] = useState("")
   const [termOptions, setTermOptions] = useState([])
   const [prereqOptionsLevelLoaded, setPrereqOptionsLevelLoaded] = useState([])
-  const [courseOptionsLevel, setCourseOptionsLevel] = useState([])
-  const [courseOptionsCourse, setCourseOptionsCourse] = useState([])
+  const [courseOptionsLevelLoaded, setCourseOptionsLevelLoaded] = useState([])
 
-  const [allPrereqs] = useState([])
-  const [allCourses] = useState([])
+  const [allPrereqs, setAllPrereqs] = useState([])
+  const [allCourses, setAllCourses] = useState([])
 
   const [preReqRows, setPrereqRows] = useState([])
+  const [courseRows, setCourseRows] = useState([])
+
+  const [selectedPrereqs, setSelectedPrereq] = useState([])
+  const [selectedCourses, setSelectedCourses] = useState([])
+
+
 
   const onLoad = async () => {
     const data = await apiAdminGetCourses(cookies.get("api_token"));
@@ -72,46 +81,38 @@ export default function SheetCreation() {
         if(data[i].isPrereq == 1) allPrereqs.push(data[i])
         else  allCourses.push(data[i])
     }
-    //setPrereqOptionsCourse(allPrereqs)
-    setCourseOptionsCourse(allCourses)
+    setAllPrereqs(allPrereqs)
+    setAllCourses(allCourses)
     const data1 = await apiGetTerms(cookies.get("api_token"));
     setTermOptions(data1);
     const data2 = await apiGetPrereqLevels(cookies.get("api_token"));
     setPrereqOptionsLevelLoaded(data2)
     const data3 = await apiGetCourseLevels(cookies.get("api_token"));
-    setCourseOptionsLevel(data3)
-    //setPrereqRows([...preReqRows, <PreRow index={0} allPrereqs={allPrereqs} prereqOptionsLevelLoaded={prereqOptionsLevelLoaded}/>])
+    setCourseOptionsLevelLoaded(data3)
+    //setPrereqRows([...preReqRows, <LevelCourseRow index={preReqRows.length} allOptions={allPrereqs} optionsLevels={prereqOptionsLevelLoaded}/>])
   };
   
   if (reloadUsers) {
-    //setPrereqRows([...preReqRows, "son of a"])
     onLoad();
     reloadUsers = false;
   }
-  function setValues(values, val){
-    console.log(values)
-    console.log(val)
-    }
+
 
     function addPrereq(){
-        console.log(preReqRows.length)
-        setPrereqRows([...preReqRows, <PreRow index={preReqRows.length} allPrereqs={allPrereqs} prereqOptionsLevelLoaded={prereqOptionsLevelLoaded}/>])
+        setSelectedPrereq([...selectedPrereqs, {Level: 0, Course: "None"}])
+        setPrereqRows([...preReqRows, <LevelCourseRow index={preReqRows.length} allOptions={allPrereqs} optionsLevels={prereqOptionsLevelLoaded} selection={selectedPrereqs} setSelection={setSelectedPrereq}/>])
     }
 
-    function addCourse(e){
-        console.log(e)
-    }
-    function courseLevelChanged(values){
-        var filtered = []
-        for(var i = 0; i < allCourses.length; ++i){
-            if(allCourses[i].level == values[0].level) filtered.push(allCourses[i])
-        }
-        setCourseOptionsCourse(filtered)
+    function addCourse(){
+        setCourseRows([...courseRows, <LevelCourseRow index={courseRows.length} allOptions={allCourses} optionsLevels={courseOptionsLevelLoaded} selection={selectedCourses} setSelection={setSelectedCourses}/>])
     }
 
     function onSubmit(e){
-        const ele = document.getElementById('hahah');
-        console.log(ele)
+        apiSubmitSheet(
+            cookies.get("api_token"), cookies.get("userID"),
+            lastTerm, currentTerm, gpa,
+            selectedPrereqs, selectedCourses
+        )
     }
 
       return (
@@ -124,7 +125,6 @@ export default function SheetCreation() {
                     options={termOptions}
                     labelField="term"
                     valueField="term"
-                    id="haha"
                     onChange={(values) => setLastTerm(values[0].term)}
                 />
                 <label className='text-2xl pl-5'> Last GPA </label>
@@ -143,7 +143,6 @@ export default function SheetCreation() {
                 className='text-2xl pl-5'
                 onChange={(values) => setCurrentTerm(values[0].term)}
             />
-        
         </div>
         <div className={styles.simpleDivision}></div>
 
@@ -182,31 +181,20 @@ export default function SheetCreation() {
             <button
                 type="button"
                 className={styles.mainPageButton}
-                onClick={addPrereq}
+                onClick={addCourse}
                 >
                 Add
             </button>
             </div>
             </div>
             <div className={styles.simpleDivision}></div>
-            <div className="text-left pb-5 flex flex-row">
-            <label className='text-2xl pl-5'> Level </label>
-            <Select
-                options={courseOptionsLevel}
-                labelField="level"
-                valueField="level"
-                className='text-2xl pl-5'
-                onChange={(values) => courseLevelChanged(values)}
-            />
-            <label className='text-2xl pl-5'> Course </label>
-            <Select
-                options={courseOptionsCourse}
-                labelField="courseName"
-                valueField="courseName"
-                className='text-2xl pl-5'
-                onChange={(values) => setValues(values)}
-            />
-            </div>
+
+
+            {courseRows.map((val, i) => (
+
+            courseRows[i]
+            ))}
+            
             <div className={styles.simpleDivision}></div>
             <div className="px-[67px] pb-[30px] content-center">
             <button
@@ -242,6 +230,27 @@ export default function SheetCreation() {
                 valueField="courseName"
                 className='text-2xl pl-5'
                 onChange={(values) => setValues(values, `prereqCourse-${i}`)}
+            />
+            </div>
+*/
+
+/*
+<div className="text-left pb-5 flex flex-row">
+            <label className='text-2xl pl-5'> Level </label>
+            <Select
+                options={courseOptionsLevel}
+                labelField="level"
+                valueField="level"
+                className='text-2xl pl-5'
+                onChange={(values) => courseLevelChanged(values)}
+            />
+            <label className='text-2xl pl-5'> Course </label>
+            <Select
+                options={courseOptionsCourse}
+                labelField="courseName"
+                valueField="courseName"
+                className='text-2xl pl-5'
+                onChange={(values) => setValues(values)}
             />
             </div>
 */
