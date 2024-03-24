@@ -10,8 +10,8 @@ var reloadUsers = true;
 
 function LevelCourseRow({allOptions, index, optionsLevels, selection, setSelection}){
     const [optionsCourse, setOptionsCourse] = useState([])
-    const [selectedLevel, setSelectedLevel] = useState([])
-    const [selectedCourse, setSelectedCourse] = useState([])
+    const [selectedLevel, setSelectedLevel] = useState(0)
+    const [selectedCourse, setSelectedCourse] = useState("")
 
     function updateSelection(level, course){
         selection[index] = {Level: level, Course: course}
@@ -32,28 +32,27 @@ function LevelCourseRow({allOptions, index, optionsLevels, selection, setSelecti
         updateSelection(selectedLevel, value[0].courseName)
     }
     return(
-        <div key={index} className="text-left pb-5 flex flex-row">
-        <label className='text-2xl pl-5'> Level </label>
+        <div key={index} className="text-left pb-5 pl-5 pr-40 flex flex-row ">
+        <label className='text-2xl pt-2 pr-3'> Level: </label>
         <Select
             options={optionsLevels}
             labelField="level"
             valueField="level"
-            className='text-2xl pl-5'
+            className='text-2xl pl-3 w-40'
             onChange={(value) => prereqLevelChanged(value)}
         />
-        <label className='text-2xl pl-5'> Course </label>
+        <label className='text-2xl pl-20 pt-2 pr-3'> Course: </label>
         <Select
             options={optionsCourse}
             labelField="courseName"
             valueField="courseName"
-            className='text-2xl pl-5'
+            className='text-2xl w-40 pl-3 '
             onChange={(value) => setValues(value)}
         />
         </div>
     )
 
 }
-
 
 export default function SheetCreation() {
   const cookies = useCookies();
@@ -73,7 +72,7 @@ export default function SheetCreation() {
   const [selectedPrereqs, setSelectedPrereq] = useState([])
   const [selectedCourses, setSelectedCourses] = useState([])
 
-
+  
 
   const onLoad = async () => {
     const data = await apiAdminGetCourses(cookies.get("api_token"));
@@ -99,55 +98,104 @@ export default function SheetCreation() {
 
 
     function addPrereq(){
-        setSelectedPrereq([...selectedPrereqs, {Level: 0, Course: "None"}])
+        setSelectedPrereq([...selectedPrereqs, {Level: 0, Course: ""}])
         setPrereqRows([...preReqRows, <LevelCourseRow index={preReqRows.length} allOptions={allPrereqs} optionsLevels={prereqOptionsLevelLoaded} selection={selectedPrereqs} setSelection={setSelectedPrereq}/>])
     }
 
     function addCourse(){
+        setSelectedCourses([...courseRows, {Level: 0, Course: ""}])
         setCourseRows([...courseRows, <LevelCourseRow index={courseRows.length} allOptions={allCourses} optionsLevels={courseOptionsLevelLoaded} selection={selectedCourses} setSelection={setSelectedCourses}/>])
     }
 
     function onSubmit(e){
-        apiSubmitSheet(
+        var errors = []
+        // Check terms
+        if(lastTerm == ""){
+            errors.push("Last Term is blank")
+        }
+        if(currentTerm == ""){
+            errors.push("Current Term is blank")
+        }
+        // Check GPA
+        const float_gpa = parseFloat(gpa)
+        if(isNaN(float_gpa)){
+            errors.push("GPA is not valid")
+        }
+        // Check prereq rows
+        const preReqRowNum = preReqRows.length;
+        if(preReqRowNum != 0){
+            if(preReqRows[preReqRowNum-1].props.selection.length == 0){
+                errors.push("Prerequisite row: 0 is not valid")
+            }
+            //console.log(preReqRows[preReqRowNum-1].props.selection)
+            preReqRows[preReqRowNum-1].props.selection.forEach((selection, index) => {
+                if(selection.Level == 0){
+                    errors.push("Prerequisite row: "+ index +" is not valid (no level selection)")
+                }
+                if(selection.Course == ""){
+                    errors.push("Prerequisite row: "+ index +" is not valid (no course selection)")
+                }
+            })
+        }
+        // Check course
+        const coursesNum = courseRows.length;
+        if(coursesNum != 0){
+            if(courseRows[courseRows-1].props.selection.length == 0){
+                errors.push("Prerequisite row: 0 is not valid")
+            }
+            //console.log(preReqRows[preReqRowNum-1].props.selection)
+            courseRows[coursesNum-1].props.selection.forEach((selection, index) => {
+                if(selection.Level == 0){
+                    errors.push("Prerequisite row: "+ index +" is not valid (no level selection)")
+                }
+                if(selection.Course == ""){
+                    errors.push("Prerequisite row: "+ index +" is not valid (no course selection)")
+                }
+            })
+        }
+        console.log(errors)
+        if(errors.length != 0){
+            return
+        }
+        /*apiSubmitSheet(
             cookies.get("api_token"), cookies.get("userID"),
             lastTerm, currentTerm, gpa,
             selectedPrereqs, selectedCourses
-        )
+        )*/
     }
 
       return (
         <div className={styles.mainFormUser}>
-            <label className="text-5xl pl-5">Term Data</label>
+            <label className="text-5xl pl-5">Header</label>
             <div className={styles.simpleDivision}></div>
-            <div className="text-left pb-5 flex flex-row" id="hahah">
-                <label className='text-2xl pl-5'> Last Term </label>
+            <div className="text-left pb-5 flex flex-row place-content-evenly">
+                <label className='text-2xl pt-2'> Last Term: </label>
                 <Select
                     options={termOptions}
                     labelField="term"
                     valueField="term"
+                    className='text-2xl'
                     onChange={(values) => setLastTerm(values[0].term)}
                 />
-                <label className='text-2xl pl-5'> Last GPA </label>
+                <label className='text-2xl pt-2'> Last GPA: </label>
                 <input
                 //ref={refInputPasswordRetyped}
-                className='text-2xl pl-5'
+                className='text-2xl w-14 pt-2'
                 value={gpa}
                 onChange={(e) => setGPA(e.target.value)}
-                placeholder="4.0"
+                placeholder="x.xx"
+                maxLength={4}
             />
-            <label className='text-2xl pl-5'> Current Term </label>
+            <label className='text-2xl pt-2'> Current Term: </label>
             <Select
                 options={termOptions}
                 labelField="term"
                 valueField="term"
-                className='text-2xl pl-5'
+                className='text-2xl'
                 onChange={(values) => setCurrentTerm(values[0].term)}
             />
         </div>
         <div className={styles.simpleDivision}></div>
-
-
-
 
 
         <div className="content-stretch pb-5 flex-row">
