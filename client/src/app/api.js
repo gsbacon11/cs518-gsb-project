@@ -200,11 +200,12 @@ export const apiAdminGetSheetDetails = async (token, sheetID) => {
   return await res.json();
 };
 
-export const apiAdminUpdateSheetStatus = async (token, sheetIDIn, statusIn, emailIn) => {
+export const apiAdminUpdateSheetStatus = async (token, sheetIDIn, statusIn, emailIn, notesIn) => {
   const formBody = JSON.stringify({
     sheetID: sheetIDIn,
     status: statusIn,
-    email: emailIn
+    email: emailIn,
+    notes: notesIn
   });
   const res = await fetch(
     process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/update-status",

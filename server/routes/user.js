@@ -174,7 +174,7 @@ router.post("/admin/update-courses", verifyToken, (req, res) => {
 router.get("/admin/sheets", verifyToken, (req, res) => {
   try {
     database.execute(
-      "SELECT usr.userID, sht.sheetID, sht.gpa, sht.termLast, usr.email, sht.date, sht.termCurrent, sht.status FROM sheets as sht, users as usr WHERE usr.userID = sht.userID ORDER BY sht.date DESC",
+      "SELECT usr.userID, sht.sheetID, sht.gpa, sht.termLast, sht.notes, usr.email, sht.date, sht.termCurrent, sht.status FROM sheets as sht, users as usr WHERE usr.userID = sht.userID ORDER BY sht.date DESC",
       function (err, result) {
         res.status(200).send(result);
       },
@@ -202,8 +202,8 @@ router.get("/admin/sheet-details/:sheetID", verifyToken, (req, res) => {
 
 router.post("/admin/update-status", verifyToken, (req, res) => {
   try {
-      database.execute("update sheets set status=? where sheetID=?", 
-      [req.body.status, req.body.sheetID],
+      database.execute("update sheets set status=?,notes=? where sheetID=?", 
+      [req.body.status, req.body.notes ,req.body.sheetID],
       function (err, result) {
         if (result.affectedRows == 0) {
           res.status(500).send([]);

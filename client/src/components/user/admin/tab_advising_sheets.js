@@ -10,7 +10,7 @@ import {
   
 
 
-export default function AdvisingSheet() {
+export default function TabAdvisingSheet() {
   const cookies = useCookies();
   const [data, setData] = useState([]);
   const  [isViewing, setIsViewing] = useState(false);
@@ -18,6 +18,8 @@ export default function AdvisingSheet() {
   const [selectedPrereqs, setSelectedPrereqs] = useState([])
   const [selectedCourses, setSelectedCourses] = useState([])
   const [selectedIndex, setSelectedIndex] = useState()
+  const [notes, setNotes] = useState("")
+
 
   useEffect(() => {
     onEffect();
@@ -35,9 +37,9 @@ export default function AdvisingSheet() {
     const rows_per_page = table.getState().pagination.pageSize
     const current_page = table.getState().pagination.pageIndex
     const real_index = (staticRowIndex) + (current_page * rows_per_page)
-    console.log(data[real_index])
+    //console.log(data[real_index])
     const data1 = await apiAdminGetSheetDetails(cookies.get("api_token"), data[real_index].sheetID)
-    console.log(data1)
+    //console.log(data1)
     data1.forEach((course)=> {
         if(course.isPrereq == 1){
             selectedPrereqs.push(course.courseName)
@@ -52,19 +54,20 @@ export default function AdvisingSheet() {
     setSelectedCourses(selectedCourses)
     setSelectedDetails(data[real_index])
     setSelectedIndex(real_index)
+    setNotes(data[real_index].notes)
     setIsViewing(true);
   }
 
   const onAccept = async(e) => {
     data[selectedIndex].status = 'Accepted'
-    setData(data)
-    apiAdminUpdateSheetStatus(cookies.get("api_token"), data[selectedIndex].sheetID, 'Accepted', data[selectedIndex].email)
+    await apiAdminUpdateSheetStatus(cookies.get("api_token"), data[selectedIndex].sheetID, 'Accepted', data[selectedIndex].email, notes)
+    onEffect();
   }
 
-  function onReject(e){
+  const onReject = async(e) =>{
     data[selectedIndex].status = 'Rejected'
-    setData(data)
-    apiAdminUpdateSheetStatus(cookies.get("api_token"), data[selectedIndex].sheetID, 'Rejected', data[selectedIndex].email)
+    await apiAdminUpdateSheetStatus(cookies.get("api_token"), data[selectedIndex].sheetID, 'Rejected', data[selectedIndex].email, notes)
+    onEffect();
   }
   
   /*
@@ -132,35 +135,36 @@ export default function AdvisingSheet() {
         <main>
             <div className='pb-5'>
              {isViewing == true ? (
+              <span>
             <div className='flex flex-row place-content-evenly'>
             <div className='border border-slate-300 h-40 w-60 rounded-xl'>
             <label className="text-2xl pl-5 text-center font-bold text-white">Viewing</label>
             <div className='border border-slate-300'></div>
-                <p className='text-white'>Sheet ID: {selectedDetails.sheetID}</p>
-                <p className='text-white'>Date Submitted: {selectedDetails.date}</p>
-                <p className='text-white'>User ID: {selectedDetails.userID}</p>
-                <p className='text-white'>{selectedDetails.email}</p>
+                <p className='pl-1 text-white'>Sheet ID: {selectedDetails.sheetID}</p>
+                <p className='pl-1  text-white'>Date Submitted: {selectedDetails.date}</p>
+                <p className='pl-1  text-white'>User ID: {selectedDetails.userID}</p>
+                <p className='pl-1  text-white'>{selectedDetails.email}</p>
             </div>
             <div className='border border-slate-300 h-40 w-60 rounded-xl'>
             <label className="text-2xl pl-5 text-center font-bold text-white">Header</label>
             <div className='border border-slate-300'></div>
-                <p className='text-white'>Last Term: {selectedDetails.termLast}</p>
-                <p className='text-white'>GPA: {selectedDetails.gpa}</p>
-                <p className='text-white'>Current Term: {selectedDetails.termCurrent}</p>
+                <p className='pl-1  text-white'>Last Term: {selectedDetails.termLast}</p>
+                <p className='pl-1  text-white'>GPA: {selectedDetails.gpa}</p>
+                <p className='pl-1  text-white'>Current Term: {selectedDetails.termCurrent}</p>
                 
             </div>
             <div className='border border-slate-300 h-40 w-60 rounded-xl'>
             <label className="text-2xl pl-5 text-center font-bold text-white">Prerequisites</label>
             <div className='border border-slate-300'></div>
             {selectedPrereqs.map((val, i) => (
-                <p key={i} className='text-white'>{val}</p>
+                <p key={i} className='pl-1  text-white'>{val}</p>
             ))}
             </div>
             <div className='border border-slate-300 h-40 w-60 rounded-xl'>
             <label className="text-2xl pl-5 text-center font-bold text-white">Courses</label>
             <div className='border border-slate-300'></div>
             {selectedCourses.map((val, i) => (
-                <p key={i} className='text-white'>{val}</p>
+                <p key={i} className='pl-1  text-white'>{val}</p>
             ))}
             </div>
             <span className='flex flex-col align-bottom place-content-evenly w-28 '>
@@ -176,6 +180,15 @@ export default function AdvisingSheet() {
             </button>
             </span>
             </div>
+            <div className='flex pl-24 pt-5'>
+            <input className='w-4/5 rounded'
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder=" Notes (optional)"
+              maxLength={180}
+            />
+            </div>
+            </span>
             ) : (
                 <span></span>
             )}
