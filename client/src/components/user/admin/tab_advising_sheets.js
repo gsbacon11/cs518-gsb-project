@@ -42,10 +42,10 @@ export default function TabAdvisingSheet() {
     //console.log(data1)
     data1.forEach((course)=> {
         if(course.isPrereq == 1){
-            selectedPrereqs.push(course.courseName)
+          selectedPrereqs.push(course.courseName)
         }
         else {
-            selectedCourses.push(course.courseName)
+          selectedCourses.push(course.courseName)
         }
 
     })

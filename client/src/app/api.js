@@ -154,9 +154,10 @@ export const apiAdminGetCourses = async (token) => {
   return await res.json();
 };
 
-export const apiAdminUpdateCourses = async (token, courses) => {
+export const apiAdminUpdateCourses = async (token, courseNameIn, isPrereqIn) => {
   const formBody = JSON.stringify({
-    courses
+    courseName: courseNameIn,
+    isPrereq: isPrereqIn
   });
   const res = await fetch(
     process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/update-courses",

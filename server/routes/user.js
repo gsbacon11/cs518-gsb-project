@@ -159,11 +159,9 @@ router.post("/admin/update-courses", verifyToken, (req, res) => {
   try {
     
     //for (var i = 0; i < 1; ++i) {
-    req.body.courses.forEach(course => {
-      database.execute("update courses set isPrereq=? where courseName=?", [
-        course.isPrereq, course.courseName
-      ]);
-    })
+      database.execute("update courses set isPrereq=? where courseName=?", 
+      [req.body.isPrereq, req.body.courseName]
+      );
     res.status(200).send([]);
   } catch (error) {
     console.log(error.message);

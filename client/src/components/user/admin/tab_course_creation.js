@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -13,25 +13,22 @@ import {
   import { useCookies } from "next-client-cookies";
   
 
-var reloadUsers = true;
-
 export default function AdminCourseCreation() {
   const cookies = useCookies();
   const [data, setData] = useState([]);
   const [changedRows, setChangedRows] = useState([]);
 
-  const onLoad = async () => {
+  useEffect(() => {
+    onEffect();
+  },[])
+
+  const onEffect = async () => {
     const data1 = await apiAdminGetCourses(cookies.get("api_token"));
-    //console.log(data1)
     if (data1.length == 0) {
       return;
     }
     setData(data1);
   };
-  if (reloadUsers) {
-    onLoad();
-    reloadUsers = false;
-  }
 
     const columns = useMemo(
         () => [
@@ -44,7 +41,7 @@ export default function AdminCourseCreation() {
             accessorKey: 'courseName',
             header: 'Course',
             size: 150,
-          },
+          },/*
           {
             width: 150,
             Header: "Tag as Prereq",
@@ -55,21 +52,22 @@ export default function AdminCourseCreation() {
               //</button>
               <Checkbox onChange={(e) => onCheckboxChange(e, cell)}/>
             )
-          },
+          },*/
         ],
         [],
       );
 
-      function onCheckboxChange(e, cell) { // cell i, table, row
+      const onCheckboxChange = async (e, staticRowIndex, table, row) => { // cell i, table, row
 
-        //const rows_per_page = table.getState().pagination.pageSize
-        //const current_page = table.getState().pagination.pageIndex
-        const real_index = cell.row.index  //(i) + (current_page * rows_per_page
-        console.log(real_index)
-        console.log(data)
-        console.log(data[real_index])
-        console.log(e.target.checked)
-        
+        const rows_per_page = table.getState().pagination.pageSize
+        const current_page = table.getState().pagination.pageIndex
+        const real_index = (staticRowIndex) + (current_page * rows_per_page)
+        //console.log(real_index)
+        //console.log(data)
+        data[real_index].isPrereq = e.target.checked
+        await apiAdminUpdateCourses(cookies.get("api_token"), data[real_index].courseName, e.target.checked)
+        onEffect();
+        /*
         data[real_index].isPrereq = e.target.checked ? 1 : 0
         
         if(changedRows.includes(real_index)){ // already in list
@@ -82,7 +80,7 @@ export default function AdminCourseCreation() {
           changedRows.push(real_index)
         }
         setChangedRows(changedRows)
-        console.log(changedRows)
+        console.log(changedRows)*/
       }
 
       function onSubmit() {
@@ -103,22 +101,14 @@ export default function AdminCourseCreation() {
         columns,
         data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
     filterFromLeafRows: true, //apply filtering to all rows instead of just parent rows
-    enableRowActions: false,
-    enableBottomToolbar: true,
+    enableRowActions: true,
     enableRowVirtualization: true,
     enableFilters: false,
     enableSorting: false,
     positionActionsColumn: 'last',
     renderRowActions: ({row, staticRowIndex, table }) => (
-      <Checkbox onChange={(e) => onCheckboxChange(e, staticRowIndex, table, row)}/>
+      <Checkbox checked={!!data[(staticRowIndex) + (table.getState().pagination.pageSize * table.getState().pagination.pageIndex)].isPrereq} onChange={(e) => onCheckboxChange(e, staticRowIndex, table, row)}/>
       ),
-    renderBottomToolbarCustomActions: ({table}) => (
-      <Button
-        onClick={() => onSubmit()}
-      >
-        Submit
-      </Button>
-    ),
   });
       return (<MaterialReactTable table={table}/>);
 
