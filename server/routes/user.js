@@ -133,18 +133,16 @@ router.get("/admin/account-requests", verifyToken, (req, res) => {
   }
 });
 
-router.post("/admin/approve-users", verifyToken, (req, res) => {
+router.post("/admin/update-user", verifyToken, (req, res) => {
   try {
-    for (var i = 0; i < 1; ++i) {
       database.execute("update users set isApproved=true where userID=?", [
-        req.body.userIDs[i],
+        req.body.userID,
       ]);
       sendEmail(
-        req.body.emails[i],
+        req.body.email,
         "ODU Course Advising Portal Account Approved",
         "Your account has offcially been approved by the administrator! Feel free to login at any time.",
       );
-    }
     res.status(200).send([]);
   } catch (error) {
     console.log(error.message);

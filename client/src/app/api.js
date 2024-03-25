@@ -123,13 +123,13 @@ export const apiAdminGetRequestedUsers = async (token) => {
   return await res.json();
 };
 
-export const apiAdminApproveUsers = async (token, userIds, emailsIn) => {
+export const apiAdminApproveUser = async (token, userIDIn, emailsIn) => {
   const formBody = JSON.stringify({
-    userIDs: userIds,
-    emails: emailsIn,
+    userID: userIDIn,
+    email: emailsIn,
   });
   const res = await fetch(
-    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/approve-users",
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/approve-user",
     {
       method: "POST",
       body: formBody,
