@@ -69,6 +69,7 @@ export default function SheetCreation() {
   const [selectedPrereqs, setSelectedPrereq] = useState([])
   const [selectedCourses, setSelectedCourses] = useState([])
   const [err, setErr] = useState([])
+  const [infoState, setInfoState] = useState(0)
 
   useEffect(() => {
     onEffect();
@@ -154,6 +155,7 @@ export default function SheetCreation() {
         }
         setErr(tmp_errors)
         if(tmp_errors.length != 0){
+            setInfoState(1)
             return;
         }
         // Check if selected courses are on other sheets
@@ -171,8 +173,10 @@ export default function SheetCreation() {
         })
         setErr(tmp_errors)
         if(tmp_errors.length != 0){
+            setInfoState(1)
             return;
         }
+        setInfoState(2)
         await apiSubmitSheet(
             cookies.get("api_token"), cookies.get("userID"),
             lastTerm, currentTerm, gpa,
@@ -246,21 +250,30 @@ export default function SheetCreation() {
             </div>
             <div className={styles.simpleDivision}></div>
 
-
             {courseRows.map((val, i) => (
                 courseRows[i]
             ))}
             
             <div className={styles.simpleDivision}></div>
             <div className="px-[67px] pb-[30px] content-center">
-            {err.map((val, i) => (
-                <p className='text-red-500'>{val}</p>
-            ))}
+            {infoState == 2 ? (
+                <span>
+                <p className='text-center'>Successfully submitted advising sheet!</p>
+                <p className='text-center'>You will get an email when the admin has responded to your form.</p>
+                </span>
+            ) : (
+                <div>
+                {err.map((val, i) => (
+                    <p className='text-red-500'>{val}</p>
+                ))}
+                </div>
+            )}
             <button
             type="button"
             className={styles.mainPageButton}
             onClick={onSubmit}
             >
+
             Submit
           </button>
           </div>

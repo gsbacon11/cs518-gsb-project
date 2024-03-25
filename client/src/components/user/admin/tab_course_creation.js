@@ -67,34 +67,6 @@ export default function AdminCourseCreation() {
         data[real_index].isPrereq = e.target.checked
         await apiAdminUpdateCourses(cookies.get("api_token"), data[real_index].courseName, e.target.checked)
         onEffect();
-        /*
-        data[real_index].isPrereq = e.target.checked ? 1 : 0
-        
-        if(changedRows.includes(real_index)){ // already in list
-          // row was changed then reverted back to same state as whats in database
-          // so remove from update list
-          const index = changedRows.indexOf(real_index);
-          changedRows.splice(index,1);
-        } else {
-          // add to list of rows we want to send to database on submit
-          changedRows.push(real_index)
-        }
-        setChangedRows(changedRows)
-        console.log(changedRows)*/
-      }
-
-      function onSubmit() {
-        console.log(changedRows)
-        /*
-        var changedCourses = [];
-        for (var i = 0; i < changedRows.length; ++i) {
-          changedCourses.push(data[changedRows[i]]);
-        }
-        apiAdminUpdateCourses(
-          cookies.get("api_token"),
-          changedCourses,
-        );*/
-        //window.location.reload(false);
       }
     
       const table = useMaterialReactTable({
@@ -106,6 +78,9 @@ export default function AdminCourseCreation() {
     enableFilters: false,
     enableSorting: false,
     positionActionsColumn: 'last',
+    localization: {
+          actions: 'Tag as Pre-Requisite'
+    },
     renderRowActions: ({row, staticRowIndex, table }) => (
       <Checkbox checked={!!data[(staticRowIndex) + (table.getState().pagination.pageSize * table.getState().pagination.pageIndex)].isPrereq} onChange={(e) => onCheckboxChange(e, staticRowIndex, table, row)}/>
       ),
@@ -113,3 +88,4 @@ export default function AdminCourseCreation() {
       return (<MaterialReactTable table={table}/>);
 };
 
+  
