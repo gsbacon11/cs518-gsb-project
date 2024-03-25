@@ -111,7 +111,5 @@ export default function AdminCourseCreation() {
       ),
   });
       return (<MaterialReactTable table={table}/>);
-
-      
 };
 

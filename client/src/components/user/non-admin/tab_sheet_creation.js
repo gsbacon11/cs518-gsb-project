@@ -53,7 +53,6 @@ function LevelCourseRow({allOptions, index, optionsLevels, selection, setSelecti
     )
 
 }
-
 export default function SheetCreation() {
   const cookies = useCookies();
   const [gpa, setGPA] = useState("");
@@ -71,6 +70,8 @@ export default function SheetCreation() {
 
   const [selectedPrereqs, setSelectedPrereq] = useState([])
   const [selectedCourses, setSelectedCourses] = useState([])
+  const [err, setErr] = useState([])
+  //const [tmp_errors, setTmpErrors] = useState([])
 
   
 
@@ -107,56 +108,55 @@ export default function SheetCreation() {
         setCourseRows([...courseRows, <LevelCourseRow index={courseRows.length} allOptions={allCourses} optionsLevels={courseOptionsLevelLoaded} selection={selectedCourses} setSelection={setSelectedCourses}/>])
     }
 
-    function onSubmit(e){
-        var errors = []
+    const onSubmit = async (e) => {
         // Check terms
+        var tmp_errors = []
         if(lastTerm == ""){
-            errors.push("Last Term is blank")
+            tmp_errors.push("Last Term is blank")
         }
         if(currentTerm == ""){
-            errors.push("Current Term is blank")
+            tmp_errors.push("Current Term is blank")
         }
         // Check GPA
         const float_gpa = parseFloat(gpa)
         if(isNaN(float_gpa)){
-            errors.push("GPA is not valid")
+            tmp_errors.push("GPA is not valid")
+            //setErr([...err, {msg:"haha"}])
         }
         // Check prereq rows
         const preReqRowNum = preReqRows.length;
         if(preReqRowNum != 0){
             if(preReqRows[preReqRowNum-1].props.selection.length == 0){
-                errors.push("Prerequisite row: 0 is not valid")
+                tmp_errors.push("Prerequisite row 0: is not valid")
             }
             //console.log(preReqRows[preReqRowNum-1].props.selection)
             preReqRows[preReqRowNum-1].props.selection.forEach((selection, index) => {
                 if(selection.Level == 0){
-                    errors.push("Prerequisite row: "+ index +" is not valid (no level selection)")
+                    tmp_errors.push("Prerequisite row "+ index +": is not valid (no level selection)")
                 }
                 if(selection.Course == ""){
-                    errors.push("Prerequisite row: "+ index +" is not valid (no course selection)")
+                    tmp_errors.push("Prerequisite row "+ index +": is not valid (no course selection)")
                 }
             })
         }
         // Check course
         const coursesNum = courseRows.length;
+        console.log(courseRows)
         if(coursesNum != 0){
-            if(courseRows[courseRows-1].props.selection.length == 0){
-                errors.push("Prerequisite row: 0 is not valid")
+            if(courseRows[coursesNum-1].props.selection.length == 0){
+                tmp_errors.push("Prerequisite row 0: is not valid")
             }
-            //console.log(preReqRows[preReqRowNum-1].props.selection)
             courseRows[coursesNum-1].props.selection.forEach((selection, index) => {
                 if(selection.Level == 0){
-                    errors.push("Prerequisite row: "+ index +" is not valid (no level selection)")
+                    tmp_errors.push("Course row "+ index +": is not valid (no level selection)")
                 }
                 if(selection.Course == ""){
-                    errors.push("Prerequisite row: "+ index +" is not valid (no course selection)")
+                    tmp_errors.push("Course row "+ index +": is not valid (no course selection)")
                 }
             })
         }
-        console.log(errors)
-        if(errors.length != 0){
-            return
-        }
+        console.log(err)
+        setErr(tmp_errors)
         /*apiSubmitSheet(
             cookies.get("api_token"), cookies.get("userID"),
             lastTerm, currentTerm, gpa,
@@ -243,6 +243,9 @@ export default function SheetCreation() {
             
             <div className={styles.simpleDivision}></div>
             <div className="px-[67px] pb-[30px] content-center">
+            {err.map((val, i) => (
+                <p className='text-red-500'>{val}</p>
+            ))}
             <button
             type="button"
             className={styles.mainPageButton}

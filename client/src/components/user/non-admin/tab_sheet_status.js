@@ -9,9 +9,7 @@ import {
   import { useCookies } from "next-client-cookies";
   
 
-var reloadUsers = true;
-
-export default function SheetStatus() {
+export default function TabSheetStatus() {
   const cookies = useCookies();
   const [data, setData] = useState([]);
 

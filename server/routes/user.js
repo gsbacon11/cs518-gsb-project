@@ -87,7 +87,7 @@ router.post("/submit-sheet", verifyToken, (req, res) => {
 router.get("/sheets-status/:userID", verifyToken, (req, res) => {
   try {
     database.execute(
-      "select date, termCurrent, status from sheets where userID=?;",
+      "select date, termCurrent, status from sheets where userID=? ORDER BY date DESC;",
       [req.params.userID],
       function (err, result) {
         res.status(200).send(result);
