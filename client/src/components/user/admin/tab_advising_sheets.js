@@ -18,6 +18,7 @@ export default function TabAdvisingSheet() {
   const [selectedCourses, setSelectedCourses] = useState([])
   const [selectedRow, setSelectedRow] = useState()
   const [notes, setNotes] = useState("")
+  const [headerInfo, setHeaderInfo] = useState("View Sheets To See More Details")
 
 
   useEffect(() => {
@@ -34,18 +35,20 @@ export default function TabAdvisingSheet() {
 
   const onView = async(e, staticRowIndex, table, row) => {
     const data1 = await apiAdminGetSheetDetails(cookies.get("api_token"), row.original.sheetID)
+    var tmp_pre = []
+    var tmp_course = []
     data1.forEach((course)=> {
         if(course.isPrereq == 1){
-          selectedPrereqs.push(course.courseName)
+          tmp_pre.push(course.courseName)
         }
         else {
-          selectedCourses.push(course.courseName)
+          tmp_course.push(course.courseName)
         }
 
     })
     
-    setSelectedPrereqs(selectedPrereqs)
-    setSelectedCourses(selectedCourses)
+    setSelectedPrereqs(tmp_pre)
+    setSelectedCourses(tmp_course)
     setSelectedRow(row.original)
     setNotes(row.original.notes)
     setIsViewing(true);
@@ -54,12 +57,16 @@ export default function TabAdvisingSheet() {
   const onAccept = async(e) => {
     selectedRow.status = 'Accepted'
     await apiAdminUpdateSheetStatus(cookies.get("api_token"), selectedRow.sheetID, 'Accepted', selectedRow.email, notes)
+    setHeaderInfo(selectedRow.firstName + " " + selectedRow.lastName + "\'s " + selectedRow.termCurrent + " Form (ID:" +selectedRow.sheetID+ ") Was ACCEPTED")
+    setIsViewing(false)
     onEffect();
   }
 
   const onReject = async(e) =>{
     selectedRow.status = 'Rejected'
     await apiAdminUpdateSheetStatus(cookies.get("api_token"), selectedRow.sheetID, 'Rejected', selectedRow.email, notes)
+    setHeaderInfo(selectedRow.firstName + " " + selectedRow.lastName + "\'s " + selectedRow.termCurrent + " Form (ID:" +selectedRow.sheetID+ ") Was REJECTED")
+    setIsViewing(false)
     onEffect();
   }
 
@@ -179,7 +186,9 @@ export default function TabAdvisingSheet() {
             </div>
             </span>
             ) : (
-                <span></span>
+                <span>
+                  <label className="text-4xl pl-5 text-center font-bold text-white">{headerInfo}</label>
+                </span>
             )}
             </div>
             <MaterialReactTable table={table}/>
