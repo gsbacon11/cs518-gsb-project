@@ -172,6 +172,54 @@ export const apiAdminUpdateCourses = async (token, courses) => {
   return [res.status, await res.json()];
 };
 
+export const apiAdminGetSheets = async (token) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/sheets",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiAdminGetSheetDetails = async (token, sheetID) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/sheet-details/" + sheetID,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiAdminUpdateSheetStatus = async (token, sheetIDIn, statusIn, emailIn) => {
+  const formBody = JSON.stringify({
+    sheetID: sheetIDIn,
+    status: statusIn,
+    email: emailIn
+  });
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/update-status",
+    {
+      method: "POST",
+      body: formBody,
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return [res.status, await res.json()];
+};
+
 export const apiGetTerms = async (token) => {
   const res = await fetch(
     process.env.NEXT_PUBLIC_SERVER_IP + "/user/terms",
@@ -250,5 +298,7 @@ export const apiGetSheetsSatus = async (token, userID) => {
   );
   return await res.json();
 };
+
+
 
 

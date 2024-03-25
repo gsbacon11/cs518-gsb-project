@@ -2,10 +2,9 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import AdminAccountRequests from "@/components/user/admin/tab_account_requests";
 import AdminTabCourseCreation from "@/components/user/admin/tab_course_creation";
+import AdminTabAdvisingSheets from "@/components/user/admin/tab_advising_sheets";
 
 
 function CustomTabPanel(props) {
@@ -60,13 +59,13 @@ export default function BasicTabs() {
       </Box>
       </div>
       <CustomTabPanel value={value} index={0}>
-         
+         <AdminTabAdvisingSheets/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <AdminTabCourseCreation/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
-        Item Three
+
       </CustomTabPanel>
     </Box>
   );

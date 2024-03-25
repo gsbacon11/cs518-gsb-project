@@ -17,7 +17,7 @@ export default function SheetStatus() {
 
   useEffect(() => {
     onEffect();
-  })
+  },[])
 
   const onEffect = async () => {
     const data1 = await apiGetSheetsSatus(cookies.get("api_token"), cookies.get("userID"));

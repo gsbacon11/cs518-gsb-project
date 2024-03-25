@@ -214,8 +214,7 @@ export default function SheetCreation() {
 
 
             {preReqRows.map((val, i) => (
-
-            preReqRows[i]
+                preReqRows[i]
             ))}
 
 
@@ -239,8 +238,7 @@ export default function SheetCreation() {
 
 
             {courseRows.map((val, i) => (
-
-            courseRows[i]
+                courseRows[i]
             ))}
             
             <div className={styles.simpleDivision}></div>
