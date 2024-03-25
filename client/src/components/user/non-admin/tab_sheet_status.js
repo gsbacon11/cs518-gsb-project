@@ -57,6 +57,8 @@ export default function TabSheetStatus() {
     positionActionsColumn: 'last',
     enableExpandAll: true,
     enableExpanding: true,
+    enableFilters: false,
+    enableSorting: false,
     muiExpandButtonProps: ({ row, table }) => ({
       onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
       sx: {
@@ -68,15 +70,6 @@ export default function TabSheetStatus() {
       <div className='w-1/3'>
         <label>{row.original.notes}</label>
       </div>
-      
-    /*
-    muiExpandButtonProps: ({ row, table }) => ({
-      onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
-      sx: {
-        transform: row.getIsExpanded() ? 'rotate(180deg)' : 'rotate(-90deg)',
-        transition: 'transform 0.2s',
-      },
-    }),*/
   }
   
   );

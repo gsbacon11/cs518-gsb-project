@@ -51,7 +51,7 @@ export default function BasicTabs() {
 
   return (
     <Box sx={{ width: '100%' }}>
-       <div className="bg-white border-slate-400">
+       <div className="bg-white border-1 border-slate-400">
       <Box sx={{ borderBottom: 1, borderColor: 'divider', borderTop:1}}>
         <Tabs value={value} onChange={handleChange} variant="fullWidth">
           <Tab label="Status" {...a11yProps(0)} />

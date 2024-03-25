@@ -191,16 +191,15 @@ export default function SheetCreation() {
                     options={termOptions}
                     labelField="term"
                     valueField="term"
-                    className='text-2xl'
+                    className='text-2xl w-52'
                     onChange={(values) => setLastTerm(values[0].term)}
                 />
                 <label className='text-2xl pt-2'> Last GPA: </label>
                 <input
                 //ref={refInputPasswordRetyped}
-                className='text-2xl w-14 pt-2'
+                className='text-2xl w-14 pt-1 border-2 border-slate rounded'
                 value={gpa}
                 onChange={(e) => setGPA(e.target.value)}
-                placeholder="x.xx"
                 maxLength={4}
             />
             <label className='text-2xl pt-2'> Current Term: </label>
@@ -208,7 +207,7 @@ export default function SheetCreation() {
                 options={termOptions}
                 labelField="term"
                 valueField="term"
-                className='text-2xl'
+                className='text-2xl w-52'
                 onChange={(values) => setCurrentTerm(values[0].term)}
             />
         </div>
@@ -225,6 +224,7 @@ export default function SheetCreation() {
                 >
                 Add
             </button>
+            
             </div>
             </div>
             <div className={styles.simpleDivision}></div>
