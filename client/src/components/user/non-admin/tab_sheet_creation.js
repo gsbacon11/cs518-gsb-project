@@ -1,12 +1,9 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
   import styles from "@/components/common/Common.module.css";
-  import { apiAdminGetCourses, apiGetCourseLevels, apiGetPrereqLevels, apiGetTerms, apiSubmitSheet } from "@/app/api";
+  import { apiAdminGetCourses, apiGetCourseLevels, apiGetPrereqLevels, apiGetTerms, apiSubmitSheet, apiGetCoursesTaken } from "@/app/api";
   import { useCookies } from "next-client-cookies";
   import Select from "react-dropdown-select";
-  
-
-var reloadUsers = true;
 
 function LevelCourseRow({allOptions, index, optionsLevels, selection, setSelection}){
     const [optionsCourse, setOptionsCourse] = useState([])
@@ -61,6 +58,7 @@ export default function SheetCreation() {
   const [termOptions, setTermOptions] = useState([])
   const [prereqOptionsLevelLoaded, setPrereqOptionsLevelLoaded] = useState([])
   const [courseOptionsLevelLoaded, setCourseOptionsLevelLoaded] = useState([])
+  const [coursesTaken, setCoursesTaken] = useState([])
 
   const [allPrereqs, setAllPrereqs] = useState([])
   const [allCourses, setAllCourses] = useState([])
@@ -71,11 +69,12 @@ export default function SheetCreation() {
   const [selectedPrereqs, setSelectedPrereq] = useState([])
   const [selectedCourses, setSelectedCourses] = useState([])
   const [err, setErr] = useState([])
-  //const [tmp_errors, setTmpErrors] = useState([])
 
-  
+  useEffect(() => {
+    onEffect();
+  },[])
 
-  const onLoad = async () => {
+  const onEffect = async () => {
     const data = await apiAdminGetCourses(cookies.get("api_token"));
     for(var i =0; i<data.length; ++i){
         if(data[i].isPrereq == 1) allPrereqs.push(data[i])
@@ -89,13 +88,12 @@ export default function SheetCreation() {
     setPrereqOptionsLevelLoaded(data2)
     const data3 = await apiGetCourseLevels(cookies.get("api_token"));
     setCourseOptionsLevelLoaded(data3)
+    const data4 = await apiGetCoursesTaken(cookies.get("api_token"), cookies.get("userID"))
+    setCoursesTaken(data4)
     //setPrereqRows([...preReqRows, <LevelCourseRow index={preReqRows.length} allOptions={allPrereqs} optionsLevels={prereqOptionsLevelLoaded}/>])
   };
   
-  if (reloadUsers) {
-    onLoad();
-    reloadUsers = false;
-  }
+
 
 
     function addPrereq(){
@@ -127,41 +125,60 @@ export default function SheetCreation() {
         const preReqRowNum = preReqRows.length;
         if(preReqRowNum != 0){
             if(preReqRows[preReqRowNum-1].props.selection.length == 0){
-                tmp_errors.push("Prerequisite row 0: is not valid")
+                tmp_errors.push("In Pre-requisites  (row 0): Invalid")
             }
             //console.log(preReqRows[preReqRowNum-1].props.selection)
             preReqRows[preReqRowNum-1].props.selection.forEach((selection, index) => {
                 if(selection.Level == 0){
-                    tmp_errors.push("Prerequisite row "+ index +": is not valid (no level selection)")
+                    tmp_errors.push("In Pre-requisites  (row "+ index +"): Invalid (no level selection)")
                 }
                 if(selection.Course == ""){
-                    tmp_errors.push("Prerequisite row "+ index +": is not valid (no course selection)")
+                    tmp_errors.push("In Pre-requisites  (row "+ index +"): Invalid (no course selection)")
                 }
             })
         }
         // Check course
         const coursesNum = courseRows.length;
-        console.log(courseRows)
         if(coursesNum != 0){
             if(courseRows[coursesNum-1].props.selection.length == 0){
-                tmp_errors.push("Prerequisite row 0: is not valid")
+                tmp_errors.push("In Courses (row 0): is not valid")
             }
             courseRows[coursesNum-1].props.selection.forEach((selection, index) => {
                 if(selection.Level == 0){
-                    tmp_errors.push("Course row "+ index +": is not valid (no level selection)")
+                    tmp_errors.push("In Courses (row "+ index +"): Invalid (no level selection)")
                 }
                 if(selection.Course == ""){
-                    tmp_errors.push("Course row "+ index +": is not valid (no course selection)")
+                    tmp_errors.push("In Courses (row "+ index +"): Invalid  (no course selection)")
                 }
             })
         }
-        console.log(err)
         setErr(tmp_errors)
-        /*apiSubmitSheet(
+        if(tmp_errors.length != 0){
+            return;
+        }
+        // Check if selected courses are on other sheets
+        coursesTaken.forEach((course) => {
+            selectedPrereqs.forEach((pre) => {
+                if(pre.Course == course.courseName){
+                    tmp_errors.push("In Pre-requisites: " + course.courseName + " previously taken")
+                }
+            })
+            selectedCourses.forEach((c) => {
+                if(c.Course == course.courseName){
+                    tmp_errors.push("In Courses: " + course.courseName + " previously taken")
+                }
+            })
+        })
+        setErr(tmp_errors)
+        if(tmp_errors.length != 0){
+            return;
+        }
+        await apiSubmitSheet(
             cookies.get("api_token"), cookies.get("userID"),
             lastTerm, currentTerm, gpa,
             selectedPrereqs, selectedCourses
-        )*/
+        )
+        onEffect()
     }
 
       return (
@@ -211,15 +228,9 @@ export default function SheetCreation() {
             </div>
             </div>
             <div className={styles.simpleDivision}></div>
-
-
             {preReqRows.map((val, i) => (
                 preReqRows[i]
             ))}
-
-
-
-
 
             <div className={styles.simpleDivision}></div>
             <div className="content-stretch pb-5 flex-row">
@@ -260,46 +271,3 @@ export default function SheetCreation() {
 
       
 };
-
-/*
-            <div key={i} className="text-left pb-5 flex flex-row">
-            <label className='text-2xl pl-5'> Level </label>
-            <Select
-                options={prereqOptionsLevel}
-                labelField="level"
-                valueField="level"
-                className='text-2xl pl-5'
-                id="prereqLevel-{key}"
-                onChange={(values) => prereqLevelChanged(values)}
-            />
-            <label className='text-2xl pl-5'> Course </label>
-            <Select
-                options={prereqOptionsCourse}
-                labelField="courseName"
-                valueField="courseName"
-                className='text-2xl pl-5'
-                onChange={(values) => setValues(values, `prereqCourse-${i}`)}
-            />
-            </div>
-*/
-
-/*
-<div className="text-left pb-5 flex flex-row">
-            <label className='text-2xl pl-5'> Level </label>
-            <Select
-                options={courseOptionsLevel}
-                labelField="level"
-                valueField="level"
-                className='text-2xl pl-5'
-                onChange={(values) => courseLevelChanged(values)}
-            />
-            <label className='text-2xl pl-5'> Course </label>
-            <Select
-                options={courseOptionsCourse}
-                labelField="courseName"
-                valueField="courseName"
-                className='text-2xl pl-5'
-                onChange={(values) => setValues(values)}
-            />
-            </div>
-*/

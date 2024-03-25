@@ -53,10 +53,33 @@ export default function TabSheetStatus() {
         columns,
         data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
     enableRowActions: false,
-    enableBottomToolbar: true,
-    enableRowVirtualization: true,
+    enableBottomToolbar: false,
     positionActionsColumn: 'last',
-  });
+    enableExpandAll: true,
+    enableExpanding: true,
+    muiExpandButtonProps: ({ row, table }) => ({
+      onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
+      sx: {
+        transform: row.getIsExpanded() ? 'rotate(180deg)' : 'rotate(-90deg)',
+        transition: 'transform 0.2s',
+      },
+    }),
+    renderDetailPanel: ({ row }) => 
+      <div className='w-1/3'>
+        <label>{row.original.notes}</label>
+      </div>
+      
+    /*
+    muiExpandButtonProps: ({ row, table }) => ({
+      onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
+      sx: {
+        transform: row.getIsExpanded() ? 'rotate(180deg)' : 'rotate(-90deg)',
+        transition: 'transform 0.2s',
+      },
+    }),*/
+  }
+  
+  );
       return (<MaterialReactTable table={table}/>); 
 
       

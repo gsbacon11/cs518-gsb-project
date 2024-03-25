@@ -301,6 +301,20 @@ export const apiGetSheetsSatus = async (token, userID) => {
   return await res.json();
 };
 
+export const apiGetCoursesTaken = async (token, userID) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/courses-taken/" + userID,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
 
 
 

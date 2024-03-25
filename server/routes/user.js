@@ -87,7 +87,22 @@ router.post("/submit-sheet", verifyToken, (req, res) => {
 router.get("/sheets-status/:userID", verifyToken, (req, res) => {
   try {
     database.execute(
-      "select date, termCurrent, status from sheets where userID=? ORDER BY date DESC;",
+      "select date, termCurrent, status, notes from sheets where userID=? ORDER BY date DESC;",
+      [req.params.userID],
+      function (err, result) {
+        res.status(200).send(result);
+      },
+    );
+  } catch (error) {
+    console.log(error.message);
+    res.status(401).send([]);
+  }
+});
+
+router.get("/courses-taken/:userID", verifyToken, (req, res) => {
+  try {
+    database.execute(
+      "SELECT s2c.courseName FROM users as usr, sheets as sht, sheets2courses as s2c WHERE usr.userID = sht.userid AND sht.sheetID = s2c.sheetID AND sht.status != 'Rejected' AND usr.userID = ?",
       [req.params.userID],
       function (err, result) {
         res.status(200).send(result);
