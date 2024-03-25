@@ -13,7 +13,6 @@ function LevelCourseRow({allOptions, index, optionsLevels, selection, setSelecti
     function updateSelection(level, course){
         selection[index] = {Level: level, Course: course}
         setSelection(selection)
-        //setSelection([...selection, {i: index, l: level, c: course}])
     }
     function prereqLevelChanged(value){
         setSelectedLevel(value[0].level)
@@ -77,12 +76,14 @@ export default function SheetCreation() {
 
   const onEffect = async () => {
     const data = await apiAdminGetCourses(cookies.get("api_token"));
-    for(var i =0; i<data.length; ++i){
-        if(data[i].isPrereq == 1) allPrereqs.push(data[i])
-        else  allCourses.push(data[i])
-    }
-    setAllPrereqs(allPrereqs)
-    setAllCourses(allCourses)
+    var tmp_pre = []
+    var tmp_course = []
+    data.forEach((course)=> {
+        if(course.isPrereq == 1) tmp_pre.push(course)
+        else  tmp_course.push(course)
+      })
+    setAllPrereqs(tmp_pre)
+    setAllCourses(tmp_course)
     const data1 = await apiGetTerms(cookies.get("api_token"));
     setTermOptions(data1);
     const data2 = await apiGetPrereqLevels(cookies.get("api_token"));
@@ -94,8 +95,6 @@ export default function SheetCreation() {
     //setPrereqRows([...preReqRows, <LevelCourseRow index={preReqRows.length} allOptions={allPrereqs} optionsLevels={prereqOptionsLevelLoaded}/>])
   };
   
-
-
 
     function addPrereq(){
         setSelectedPrereq([...selectedPrereqs, {Level: 0, Course: ""}])
@@ -162,12 +161,12 @@ export default function SheetCreation() {
         coursesTaken.forEach((course) => {
             selectedPrereqs.forEach((pre) => {
                 if(pre.Course == course.courseName){
-                    tmp_errors.push("In Pre-requisites: " + course.courseName + " previously taken")
+                    tmp_errors.push("In Pre-requisites: " + course.courseName + " in \"" + course.status + "\" form")
                 }
             })
             selectedCourses.forEach((c) => {
                 if(c.Course == course.courseName){
-                    tmp_errors.push("In Courses: " + course.courseName + " previously taken")
+                    tmp_errors.push("In Courses: " + course.courseName + " in \"" + course.status + "\" form")
                 }
             })
         })

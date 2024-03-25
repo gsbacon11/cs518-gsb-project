@@ -102,7 +102,7 @@ router.get("/sheets-status/:userID", verifyToken, (req, res) => {
 router.get("/courses-taken/:userID", verifyToken, (req, res) => {
   try {
     database.execute(
-      "SELECT s2c.courseName FROM users as usr, sheets as sht, sheets2courses as s2c WHERE usr.userID = sht.userid AND sht.sheetID = s2c.sheetID AND sht.status != 'Rejected' AND usr.userID = ?",
+      "SELECT s2c.courseName, sht.status FROM users as usr, sheets as sht, sheets2courses as s2c WHERE usr.userID = sht.userid AND sht.sheetID = s2c.sheetID AND sht.status != 'Rejected' AND usr.userID = ?",
       [req.params.userID],
       function (err, result) {
         res.status(200).send(result);
