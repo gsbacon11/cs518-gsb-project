@@ -224,7 +224,6 @@ export default function SheetCreation() {
                 >
                 Add
             </button>
-            
             </div>
             </div>
             <div className={styles.simpleDivision}></div>

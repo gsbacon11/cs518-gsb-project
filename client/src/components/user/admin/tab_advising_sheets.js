@@ -14,10 +14,9 @@ export default function TabAdvisingSheet() {
   const cookies = useCookies();
   const [data, setData] = useState([]);
   const  [isViewing, setIsViewing] = useState(false);
-  const [selectedDetails, setSelectedDetails] = useState()
   const [selectedPrereqs, setSelectedPrereqs] = useState([])
   const [selectedCourses, setSelectedCourses] = useState([])
-  const [selectedIndex, setSelectedIndex] = useState()
+  const [selectedRow, setSelectedRow] = useState()
   const [notes, setNotes] = useState("")
 
 
@@ -34,12 +33,7 @@ export default function TabAdvisingSheet() {
   };
 
   const onView = async(e, staticRowIndex, table, row) => {
-    const rows_per_page = table.getState().pagination.pageSize
-    const current_page = table.getState().pagination.pageIndex
-    const real_index = (staticRowIndex) + (current_page * rows_per_page)
-    //console.log(data[real_index])
-    const data1 = await apiAdminGetSheetDetails(cookies.get("api_token"), data[real_index].sheetID)
-    //console.log(data1)
+    const data1 = await apiAdminGetSheetDetails(cookies.get("api_token"), row.original.sheetID)
     data1.forEach((course)=> {
         if(course.isPrereq == 1){
           selectedPrereqs.push(course.courseName)
@@ -52,40 +46,35 @@ export default function TabAdvisingSheet() {
     
     setSelectedPrereqs(selectedPrereqs)
     setSelectedCourses(selectedCourses)
-    setSelectedDetails(data[real_index])
-    setSelectedIndex(real_index)
-    setNotes(data[real_index].notes)
+    setSelectedRow(row.original)
+    setNotes(row.original.notes)
     setIsViewing(true);
   }
 
   const onAccept = async(e) => {
-    data[selectedIndex].status = 'Accepted'
-    await apiAdminUpdateSheetStatus(cookies.get("api_token"), data[selectedIndex].sheetID, 'Accepted', data[selectedIndex].email, notes)
+    selectedRow.status = 'Accepted'
+    await apiAdminUpdateSheetStatus(cookies.get("api_token"), selectedRow.sheetID, 'Accepted', selectedRow.email, notes)
     onEffect();
   }
 
   const onReject = async(e) =>{
-    data[selectedIndex].status = 'Rejected'
-    await apiAdminUpdateSheetStatus(cookies.get("api_token"), data[selectedIndex].sheetID, 'Rejected', data[selectedIndex].email, notes)
+    selectedRow.status = 'Rejected'
+    await apiAdminUpdateSheetStatus(cookies.get("api_token"), selectedRow.sheetID, 'Rejected', selectedRow.email, notes)
     onEffect();
   }
-  
-  /*
-  function onView(e, staticRowIndex, table, row){
-    const rows_per_page = table.getState().pagination.pageSize
-    const current_page = table.getState().pagination.pageIndex
-    const real_index = (staticRowIndex) + (current_page * rows_per_page)
-    //console.log(e)
-    //console.log(staticRowIndex)
-    console.log(data[real_index])
-    const data1 = await apiAdminGetSheetDetails(cookies.get("api_token"))
-    con
-    //console.log(row)
-    
-  }*/
 
     const columns = useMemo(
         () => [
+          {
+            accessorKey: 'firstName', 
+            header: 'First Name',
+            size: 150,
+          },
+          {
+            accessorKey: 'lastName', 
+            header: 'Last Name',
+            size: 150,
+          },
           {
             accessorKey: 'email', 
             header: 'Email',
@@ -140,17 +129,17 @@ export default function TabAdvisingSheet() {
             <div className='border border-slate-300 h-40 w-60 rounded-xl'>
             <label className="text-2xl pl-5 text-center font-bold text-white">Viewing</label>
             <div className='border border-slate-300'></div>
-                <p className='pl-1 text-white'>Sheet ID: {selectedDetails.sheetID}</p>
-                <p className='pl-1  text-white'>Date Submitted: {selectedDetails.date}</p>
-                <p className='pl-1  text-white'>User ID: {selectedDetails.userID}</p>
-                <p className='pl-1  text-white'>{selectedDetails.email}</p>
+                <p className='pl-1 text-white'>Sheet ID: {selectedRow.sheetID}</p>
+                <p className='pl-1  text-white'>Date Submitted: {selectedRow.date}</p>
+                <p className='pl-1  text-white'>User ID: {selectedRow.userID}</p>
+                <p className='pl-1  text-white'>{selectedRow.email}</p>
             </div>
             <div className='border border-slate-300 h-40 w-60 rounded-xl'>
             <label className="text-2xl pl-5 text-center font-bold text-white">Header</label>
             <div className='border border-slate-300'></div>
-                <p className='pl-1  text-white'>Last Term: {selectedDetails.termLast}</p>
-                <p className='pl-1  text-white'>GPA: {selectedDetails.gpa}</p>
-                <p className='pl-1  text-white'>Current Term: {selectedDetails.termCurrent}</p>
+                <p className='pl-1  text-white'>Last Term: {selectedRow.termLast}</p>
+                <p className='pl-1  text-white'>GPA: {selectedRow.gpa}</p>
+                <p className='pl-1  text-white'>Current Term: {selectedRow.termCurrent}</p>
                 
             </div>
             <div className='border border-slate-300 h-40 w-60 rounded-xl'>

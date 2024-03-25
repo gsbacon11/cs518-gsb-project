@@ -11,8 +11,10 @@ export const apiLookupEmail = async (email) => {
   return await res.json();
 };
 
-export const apiSignUp = async (email, password) => {
+export const apiSignUp = async (firstName, lastName, email, password) => {
   const formBody = JSON.stringify({
+    firstName: firstName,
+    lastName: lastName,
     email: email,
     password: password,
   });

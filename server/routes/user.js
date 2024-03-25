@@ -118,7 +118,7 @@ router.get("/courses-taken/:userID", verifyToken, (req, res) => {
 router.get("/admin/account-requests", verifyToken, (req, res) => {
   try {
     database.execute(
-      "select userID, email, isApproved from users where isApproved = false",
+      "select userID, firstName, lastName, email, isApproved from users where isApproved = false",
       function (err, result) {
         if (result == 0) {
           res.status(200).send(result);
@@ -187,7 +187,7 @@ router.post("/admin/update-courses", verifyToken, (req, res) => {
 router.get("/admin/sheets", verifyToken, (req, res) => {
   try {
     database.execute(
-      "SELECT usr.userID, sht.sheetID, sht.gpa, sht.termLast, sht.notes, usr.email, sht.date, sht.termCurrent, sht.status FROM sheets as sht, users as usr WHERE usr.userID = sht.userID ORDER BY sht.date DESC",
+      "SELECT usr.userID, sht.sheetID, sht.gpa, sht.termLast, sht.notes, usr.firstName, usr.lastName, usr.email, sht.date, sht.termCurrent, sht.status FROM sheets as sht, users as usr WHERE usr.userID = sht.userID ORDER BY sht.date DESC",
       function (err, result) {
         res.status(200).send(result);
       },
