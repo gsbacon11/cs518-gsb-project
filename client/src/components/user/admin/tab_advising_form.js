@@ -77,7 +77,7 @@ export default function TabAdvisingSheet() {
             header: 'First Name',
             size: 150,
           },
-          {
+          { 
             accessorKey: 'lastName', 
             header: 'Last Name',
             size: 150,

@@ -129,7 +129,7 @@ export const apiAdminApproveUser = async (token, userIDIn, emailsIn) => {
     email: emailsIn,
   });
   const res = await fetch(
-    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/approve-user",
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/update-user",
     {
       method: "POST",
       body: formBody,

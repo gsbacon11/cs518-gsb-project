@@ -257,8 +257,8 @@ export default function SheetCreation() {
             <div className="px-[67px] pb-[30px] content-center">
             {infoState == 2 ? (
                 <span>
-                <p className='text-center'>Successfully submitted advising sheet!</p>
-                <p className='text-center'>You will get an email when the admin has responded to your form.</p>
+                <p className='text-center'>Successfully submitted advising form!</p>
+                <p className='text-center'>You will get an email when the admin has responded to your submission.</p>
                 </span>
             ) : (
                 <div>
