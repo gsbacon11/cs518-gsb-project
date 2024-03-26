@@ -12,6 +12,8 @@ import { apiLookupEmail, apiSignUp } from "@/app/api";
 
 export default function HomeComponent() {
   const router = useRouter();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [emailValid, setEmailValid] = useState(true);
   const [emailError, setEmailError] = useState("");
@@ -32,7 +34,7 @@ export default function HomeComponent() {
       return;
     }
 
-    await apiSignUp(email, password);
+    await apiSignUp(firstName, lastName, email, password);
     router.push("/account-status");
   };
 
@@ -69,6 +71,22 @@ export default function HomeComponent() {
       <div className={styles.mainForm}>
         <div className={styles.mainFormDiv}>
           <label className={styles.labelFormHeader}>Create Account</label>
+          <input
+            type="text"
+            className={styles.inputText}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First Name"
+          />
+          <div className={styles.divUserError}></div>
+          <input
+            type="text"
+            className={styles.inputText}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Last Name"
+          />
+          <div className={styles.divUserError}></div>
           <input
             type="text"
             ref={refInputEmail}

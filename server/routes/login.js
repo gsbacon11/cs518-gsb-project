@@ -56,7 +56,7 @@ router.post("/", (req, res) => {
                 email: req.body.email,
               },
               process.env.TOKEN_SECRET_KEY,
-              { expiresIn: "1h" },
+              { expiresIn: "24h" },
             );
             res.status(200).send({
               data: {

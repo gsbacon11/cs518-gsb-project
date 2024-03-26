@@ -8,8 +8,15 @@ router.post("/", (req, res) => {
   try {
     const hashedPassword = hashPassword(req.body.password);
     database.execute(
-      "insert into users (email, password, isAdmin, isApproved) values (?,?,?,?)",
-      [req.body.email, hashedPassword, 0, 0],
+      "insert into users (firstName, lastName, email, password, isAdmin, isApproved) values (?,?,?,?,?,?)",
+      [
+        req.body.firstName,
+        req.body.lastName,
+        req.body.email,
+        hashedPassword,
+        0,
+        0,
+      ],
       function (err, result) {
         if (result.affectedRows == 0) {
           res.status(200).send({

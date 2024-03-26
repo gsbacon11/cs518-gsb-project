@@ -11,8 +11,10 @@ export const apiLookupEmail = async (email) => {
   return await res.json();
 };
 
-export const apiSignUp = async (email, password) => {
+export const apiSignUp = async (firstName, lastName, email, password) => {
   const formBody = JSON.stringify({
+    firstName: firstName,
+    lastName: lastName,
     email: email,
     password: password,
   });
@@ -121,13 +123,13 @@ export const apiAdminGetRequestedUsers = async (token) => {
   return await res.json();
 };
 
-export const apiAdminApproveUsers = async (token, userIds, emailsIn) => {
+export const apiAdminApproveUser = async (token, userIDIn, emailsIn) => {
   const formBody = JSON.stringify({
-    userIDs: userIds,
-    emails: emailsIn,
+    userID: userIDIn,
+    email: emailsIn,
   });
   const res = await fetch(
-    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/approve-users",
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/update-user",
     {
       method: "POST",
       body: formBody,
@@ -138,4 +140,194 @@ export const apiAdminApproveUsers = async (token, userIds, emailsIn) => {
     },
   );
   return [res.status, await res.json()];
+};
+
+export const apiAdminGetCourses = async (token) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/courses",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiAdminUpdateCourses = async (
+  token,
+  courseNameIn,
+  isPrereqIn,
+) => {
+  const formBody = JSON.stringify({
+    courseName: courseNameIn,
+    isPrereq: isPrereqIn,
+  });
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/update-courses",
+    {
+      method: "POST",
+      body: formBody,
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return [res.status, await res.json()];
+};
+
+export const apiAdminGetSheets = async (token) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/sheets",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiAdminGetSheetDetails = async (token, sheetID) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/sheet-details/" + sheetID,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiAdminUpdateSheetStatus = async (
+  token,
+  sheetIDIn,
+  statusIn,
+  emailIn,
+  notesIn,
+) => {
+  const formBody = JSON.stringify({
+    sheetID: sheetIDIn,
+    status: statusIn,
+    email: emailIn,
+    notes: notesIn,
+  });
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/update-status",
+    {
+      method: "POST",
+      body: formBody,
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return [res.status, await res.json()];
+};
+
+export const apiGetTerms = async (token) => {
+  const res = await fetch(process.env.NEXT_PUBLIC_SERVER_IP + "/user/terms", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      token: token,
+    },
+  });
+  return await res.json();
+};
+
+export const apiGetPrereqLevels = async (token) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/levels-prereq",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiGetCourseLevels = async (token) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/levels-courses",
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiSubmitSheet = async (
+  token,
+  userIDIn,
+  termLastIn,
+  termCurrentIn,
+  gpaIn,
+  preReqsIn,
+  coursesIn,
+) => {
+  const formBody = JSON.stringify({
+    userID: userIDIn,
+    termLast: termLastIn,
+    termCurrent: termCurrentIn,
+    gpa: gpaIn,
+    preReqs: preReqsIn,
+    courses: coursesIn,
+  });
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/submit-sheet",
+    {
+      method: "POST",
+      body: formBody,
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return [res.status, await res.json()];
+};
+
+export const apiGetSheetsSatus = async (token, userID) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/sheets-status/" + userID,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
+};
+
+export const apiGetCoursesTaken = async (token, userID) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_SERVER_IP + "/user/courses-taken/" + userID,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,
+      },
+    },
+  );
+  return await res.json();
 };

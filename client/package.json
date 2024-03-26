@@ -11,15 +11,22 @@
     "prettier:check": "prettier --check ."
   },
   "dependencies": {
-    "@emotion/react": "^11.11.3",
+    "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.18",
-    "@mui/material": "^5.15.10",
+    "@mui/material": "^5.15.12",
+    "@popperjs/core": "^2.11.8",
+    "@tanstack/react-query": "^5.25.0",
+    "material-react-table": "^2.12.1",
     "next": "^14.1.0",
     "next-client-cookies": "^1.1.0",
     "prettier": "^3.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-dropdown-select": "^4.11.2",
+    "react-popper": "^2.3.0",
+    "react-tabs": "^6.0.2",
+    "reactjs-popup": "^2.0.6"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
