@@ -156,10 +156,14 @@ export const apiAdminGetCourses = async (token) => {
   return await res.json();
 };
 
-export const apiAdminUpdateCourses = async (token, courseNameIn, isPrereqIn) => {
+export const apiAdminUpdateCourses = async (
+  token,
+  courseNameIn,
+  isPrereqIn,
+) => {
   const formBody = JSON.stringify({
     courseName: courseNameIn,
-    isPrereq: isPrereqIn
+    isPrereq: isPrereqIn,
   });
   const res = await fetch(
     process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/update-courses",
@@ -203,12 +207,18 @@ export const apiAdminGetSheetDetails = async (token, sheetID) => {
   return await res.json();
 };
 
-export const apiAdminUpdateSheetStatus = async (token, sheetIDIn, statusIn, emailIn, notesIn) => {
+export const apiAdminUpdateSheetStatus = async (
+  token,
+  sheetIDIn,
+  statusIn,
+  emailIn,
+  notesIn,
+) => {
   const formBody = JSON.stringify({
     sheetID: sheetIDIn,
     status: statusIn,
     email: emailIn,
-    notes: notesIn
+    notes: notesIn,
   });
   const res = await fetch(
     process.env.NEXT_PUBLIC_SERVER_IP + "/user/admin/update-status",
@@ -225,16 +235,13 @@ export const apiAdminUpdateSheetStatus = async (token, sheetIDIn, statusIn, emai
 };
 
 export const apiGetTerms = async (token) => {
-  const res = await fetch(
-    process.env.NEXT_PUBLIC_SERVER_IP + "/user/terms",
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        token: token,
-      },
+  const res = await fetch(process.env.NEXT_PUBLIC_SERVER_IP + "/user/terms", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      token: token,
     },
-  );
+  });
   return await res.json();
 };
 
@@ -266,14 +273,22 @@ export const apiGetCourseLevels = async (token) => {
   return await res.json();
 };
 
-export const apiSubmitSheet = async (token, userIDIn, termLastIn, termCurrentIn, gpaIn, preReqsIn, coursesIn) => {
+export const apiSubmitSheet = async (
+  token,
+  userIDIn,
+  termLastIn,
+  termCurrentIn,
+  gpaIn,
+  preReqsIn,
+  coursesIn,
+) => {
   const formBody = JSON.stringify({
     userID: userIDIn,
     termLast: termLastIn,
     termCurrent: termCurrentIn,
     gpa: gpaIn,
     preReqs: preReqsIn,
-    courses: coursesIn
+    courses: coursesIn,
   });
   const res = await fetch(
     process.env.NEXT_PUBLIC_SERVER_IP + "/user/submit-sheet",
@@ -316,7 +331,3 @@ export const apiGetCoursesTaken = async (token, userID) => {
   );
   return await res.json();
 };
-
-
-
-

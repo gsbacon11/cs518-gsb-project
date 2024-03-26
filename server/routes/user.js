@@ -24,12 +24,9 @@ router.get("/exists/:email", (req, res) => {
 
 router.get("/terms", verifyToken, (req, res) => {
   try {
-    database.execute(
-      "select * from terms",
-      function (err, result) {
-        res.status(200).send(result);
-      },
-    );
+    database.execute("select * from terms", function (err, result) {
+      res.status(200).send(result);
+    });
   } catch (error) {
     console.log(error.message);
     res.status(401).send([]);
@@ -52,7 +49,6 @@ router.get("/levels-prereq", verifyToken, (req, res) => {
 
 router.get("/levels-courses", verifyToken, (req, res) => {
   try {
-    
     database.execute(
       "select DISTINCT level FROM courses WHERE isPrereq is false",
       function (err, result) {
@@ -67,16 +63,19 @@ router.get("/levels-courses", verifyToken, (req, res) => {
 
 router.post("/submit-sheet", verifyToken, (req, res) => {
   try {
-      database.execute("insert into sheets (userID, termCurrent, termLast, gpa) VALUES (?, ? ,?, ?);",
+    database.execute(
+      "insert into sheets (userID, termCurrent, termLast, gpa) VALUES (?, ? ,?, ?);",
       [req.body.userID, req.body.termCurrent, req.body.termLast, req.body.gpa],
       function (err, result) {
-        const allCourses = req.body.preReqs.concat(req.body.courses)
-        allCourses.forEach(course => {
-          database.execute("insert into sheets2courses (sheetID, courseName) VALUES (?, ?);",
-        [result.insertId, course.Course],
-        )
-      })
-      })
+        const allCourses = req.body.preReqs.concat(req.body.courses);
+        allCourses.forEach((course) => {
+          database.execute(
+            "insert into sheets2courses (sheetID, courseName) VALUES (?, ?);",
+            [result.insertId, course.Course],
+          );
+        });
+      },
+    );
     res.status(200).send([]);
   } catch (error) {
     console.log(error.message);
@@ -114,7 +113,6 @@ router.get("/courses-taken/:userID", verifyToken, (req, res) => {
   }
 });
 
-
 router.get("/admin/account-requests", verifyToken, (req, res) => {
   try {
     database.execute(
@@ -135,14 +133,14 @@ router.get("/admin/account-requests", verifyToken, (req, res) => {
 
 router.post("/admin/update-user", verifyToken, (req, res) => {
   try {
-      database.execute("update users set isApproved=true where userID=?", [
-        req.body.userID,
-      ]);
-      sendEmail(
-        req.body.email,
-        "ODU Course Advising Portal Account Approved",
-        "Your account has offcially been approved by the administrator! Feel free to login at any time.",
-      );
+    database.execute("update users set isApproved=true where userID=?", [
+      req.body.userID,
+    ]);
+    sendEmail(
+      req.body.email,
+      "ODU Course Advising Portal Account Approved",
+      "Your account has offcially been approved by the administrator! Feel free to login at any time.",
+    );
     res.status(200).send([]);
   } catch (error) {
     console.log(error.message);
@@ -152,16 +150,13 @@ router.post("/admin/update-user", verifyToken, (req, res) => {
 
 router.get("/admin/courses", verifyToken, (req, res) => {
   try {
-    database.execute(
-      "select * from courses",
-      function (err, result) {
-        if (result == 0) {
-          res.status(200).send(result);
-        } else {
-          res.status(200).send(result);
-        }
-      },
-    );
+    database.execute("select * from courses", function (err, result) {
+      if (result == 0) {
+        res.status(200).send(result);
+      } else {
+        res.status(200).send(result);
+      }
+    });
   } catch (error) {
     console.log(error.message);
     res.status(401).send([]);
@@ -170,11 +165,11 @@ router.get("/admin/courses", verifyToken, (req, res) => {
 
 router.post("/admin/update-courses", verifyToken, (req, res) => {
   try {
-    
     //for (var i = 0; i < 1; ++i) {
-      database.execute("update courses set isPrereq=? where courseName=?", 
-      [req.body.isPrereq, req.body.courseName]
-      );
+    database.execute("update courses set isPrereq=? where courseName=?", [
+      req.body.isPrereq,
+      req.body.courseName,
+    ]);
     res.status(200).send([]);
   } catch (error) {
     console.log(error.message);
@@ -213,8 +208,9 @@ router.get("/admin/sheet-details/:sheetID", verifyToken, (req, res) => {
 
 router.post("/admin/update-status", verifyToken, (req, res) => {
   try {
-      database.execute("update sheets set status=?,notes=? where sheetID=?", 
-      [req.body.status, req.body.notes ,req.body.sheetID],
+    database.execute(
+      "update sheets set status=?,notes=? where sheetID=?",
+      [req.body.status, req.body.notes, req.body.sheetID],
       function (err, result) {
         if (result.affectedRows == 0) {
           res.status(500).send([]);
@@ -223,11 +219,13 @@ router.post("/admin/update-status", verifyToken, (req, res) => {
           sendEmail(
             req.body.email,
             "ODU Course Advising Sheet Status Update",
-            "Your ODU Advising Sheet Has Been " + req.body.status + ".\n Please login for more information!",
+            "Your ODU Advising Sheet Has Been " +
+              req.body.status +
+              ".\n Please login for more information!",
           );
         }
-        },
-      );
+      },
+    );
   } catch (error) {
     console.log(error.message);
     res.status(401).send([]);

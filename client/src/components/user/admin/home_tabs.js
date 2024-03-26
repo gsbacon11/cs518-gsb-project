@@ -1,12 +1,11 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
+import * as React from "react";
+import PropTypes from "prop-types";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 import AdminTabCourseCreation from "@/components/user/admin/tab_edit_courses";
 import AdminTabAdvisingSheets from "@/components/user/admin/tab_advising_form";
 import AdminTabAccountRequests from "@/components/user/admin/tab_account_requests";
-
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -19,11 +18,7 @@ function CustomTabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -31,7 +26,7 @@ function CustomTabPanel(props) {
 function a11yProps(index) {
   return {
     id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
   };
 }
 
@@ -49,21 +44,21 @@ export default function BasicTabs() {
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
-       <div className="bg-white border-slate-400">
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', borderTop:1}}>
-        <Tabs value={value} onChange={handleChange} variant="fullWidth">
-          <Tab label="Advising Forms" {...a11yProps(0)} />
-          <Tab label="Edit Courses" {...a11yProps(1)} />
-          <Tab label="Account Requests" {...a11yProps(2)} />
-        </Tabs>
-      </Box>
+    <Box sx={{ width: "100%" }}>
+      <div className="bg-white border-slate-400">
+        <Box sx={{ borderBottom: 1, borderColor: "divider", borderTop: 1 }}>
+          <Tabs value={value} onChange={handleChange} variant="fullWidth">
+            <Tab label="Advising Forms" {...a11yProps(0)} />
+            <Tab label="Edit Courses" {...a11yProps(1)} />
+            <Tab label="Account Requests" {...a11yProps(2)} />
+          </Tabs>
+        </Box>
       </div>
       <CustomTabPanel value={value} index={0}>
-         <AdminTabAdvisingSheets/>
+        <AdminTabAdvisingSheets />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <AdminTabCourseCreation/>
+        <AdminTabCourseCreation />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <AdminTabAccountRequests></AdminTabAccountRequests>
