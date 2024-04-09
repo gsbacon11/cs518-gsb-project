@@ -112,7 +112,7 @@ export default function HomeComponent() {
             {!passwordValid && (
               <ErrorLabel
                 arg={
-                  "Password must be greater than 7 characters with no spaces."
+                  "Password does not meet the complexity criteria."
                 }
               />
             )}{" "}
