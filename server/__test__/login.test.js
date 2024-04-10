@@ -21,7 +21,7 @@ describe("Test Login Procedure", ()=> {
     test("Login Attempt: Valid Email, Incorrect Password", async()=> {
         const response= await supertest(app).post('/login')
         .send({
-            email: "gsbacon11@gmail.com",
+            email: test_email,
             password: "incorrect_password"
         });
         expect(response.status).toEqual(401);
