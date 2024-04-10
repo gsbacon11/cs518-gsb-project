@@ -31,7 +31,7 @@ router.get("/", verifyToken, (req, res) => {
               }
             },
           );
-          res.status(200).send(result);
+          res.status(200).send([result, rng]);
         }
       },
     );
