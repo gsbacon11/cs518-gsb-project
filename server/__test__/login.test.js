@@ -1,8 +1,8 @@
 const supertest = require("supertest");
 const {app} = require('../server');
-const res = require("express/lib/response");
 
-const test_email = "gsbacon11@gmail.com";
+const test_email = "gsbacon11extra@gmail.com";
+const test_password = "Aa1234567!!!";
 var global_token;
 var global_userID;
 var global_loginID;
@@ -32,13 +32,13 @@ describe("Test Login Procedure", ()=> {
         const response= await supertest(app).post('/login')
         .send({
             email: test_email,
-            password: test_email
+            password: test_password
         });
         global_token = response.body.data.toke
         global_userID = response.body.data.userID;
         expect(response.status).toEqual(200);
         expect(response.body.data.email).toEqual(test_email);
-        expect(global_userID).toEqual(50);
+        expect(global_userID).toEqual(49);
     });
 
     test("Email Verification Code with Invalid Token Authentication", async()=> {

@@ -77,7 +77,7 @@ export default function AccountSetting() {
               {" "}
               {!passwordValid && (
                 <label>
-                  Password must be greater than 7 characters with no spaces.
+                  Password does not meet the complexity criteria.
                 </label>
               )}{" "}
             </div>
