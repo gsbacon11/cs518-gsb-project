@@ -6,7 +6,7 @@ const generator = require("generate-password");
 
 router.post("/", (req, res) => {
   try {
-    const temp_password = generator.generate({ length: 10, numbers: true });
+    const temp_password = generator.generate({ length: 10, numbers: true}) + "1d@F";
     var hashedPassword = hashPassword(temp_password);
     database.execute(
       "update users set password=?, passwordReset=1 where email=?",
