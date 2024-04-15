@@ -56,9 +56,9 @@ export default function HomeComponent() {
   };
 
   const onSignIn = (event) => {
-      event.preventDefault();
-      recaptchaRef.current.execute();
-  }
+    event.preventDefault();
+    recaptchaRef.current.execute();
+  };
 
   const onReCAPTCHAChange = () => {
     var email_valid = validateEmailString(email);
@@ -70,7 +70,7 @@ export default function HomeComponent() {
       return;
     }
     signIn();
-  }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -106,7 +106,7 @@ export default function HomeComponent() {
             )}{" "}
           </div>
           <ReCAPTCHA
-            ref = {recaptchaRef}
+            ref={recaptchaRef}
             size="invisible"
             sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
             onChange={onReCAPTCHAChange}

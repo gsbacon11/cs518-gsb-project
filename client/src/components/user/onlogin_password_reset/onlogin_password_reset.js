@@ -58,9 +58,7 @@ export default function PasswordResetOnLogin() {
           <div className={styles.divUserError}>
             {" "}
             {!passwordValid && (
-              <label>
-                Password does not meet the complexity criteria.
-              </label>
+              <label>Password does not meet the complexity criteria.</label>
             )}{" "}
           </div>
           <input

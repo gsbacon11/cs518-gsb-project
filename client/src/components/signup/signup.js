@@ -111,9 +111,7 @@ export default function HomeComponent() {
             {" "}
             {!passwordValid && (
               <ErrorLabel
-                arg={
-                  "Password does not meet the complexity criteria."
-                }
+                arg={"Password does not meet the complexity criteria."}
               />
             )}{" "}
           </div>

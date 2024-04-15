@@ -3,9 +3,7 @@ export function ErrorEmailLabel() {
 }
 
 export function ErrorPasswordLabel() {
-  return (
-    <label>Password does not meet the complexity criteria.</label>
-  );
+  return <label>Password does not meet the complexity criteria.</label>;
 }
 
 export function ErrorPasswordsMismatchLabel() {
