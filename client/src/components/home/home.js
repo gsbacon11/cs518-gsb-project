@@ -10,6 +10,7 @@ import {
 } from "../common/ui_validation";
 import { ErrorLabel } from "../common/dynamic_labels";
 import { apiLookupEmail, apiRequestToken, apiLogin } from "@/app/api";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function HomeComponent() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function HomeComponent() {
   const refInputEmail = useRef();
   const refInputPassword = useRef();
   const cookies = useCookies();
+  const recaptchaRef = useRef(null);
 
   function styleError() {
     refInputEmail.current.style.borderColor = "red";
@@ -53,7 +55,12 @@ export default function HomeComponent() {
     router.push("/authenticate-login");
   };
 
-  function onSignIn() {
+  const onSignIn = (event) => {
+    event.preventDefault();
+    recaptchaRef.current.execute();
+  };
+
+  const onReCAPTCHAChange = () => {
     var email_valid = validateEmailString(email);
     var password_valid = validatePasswordString(password);
     var input_valid = password_valid && email_valid;
@@ -63,7 +70,7 @@ export default function HomeComponent() {
       return;
     }
     signIn();
-  }
+  };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -98,6 +105,12 @@ export default function HomeComponent() {
               />
             )}{" "}
           </div>
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            size="invisible"
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+            onChange={onReCAPTCHAChange}
+          />
           <button
             type="button"
             className={styles.mainPageButton}

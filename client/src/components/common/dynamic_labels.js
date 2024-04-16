@@ -3,9 +3,7 @@ export function ErrorEmailLabel() {
 }
 
 export function ErrorPasswordLabel() {
-  return (
-    <label>Password must be greater than 7 characters with no spaces.</label>
-  );
+  return <label>Password does not meet the complexity criteria.</label>;
 }
 
 export function ErrorPasswordsMismatchLabel() {

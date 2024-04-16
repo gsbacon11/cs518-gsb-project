@@ -76,9 +76,7 @@ export default function AccountSetting() {
             <div className={styles.divUserError}>
               {" "}
               {!passwordValid && (
-                <label>
-                  Password must be greater than 7 characters with no spaces.
-                </label>
+                <label>Password does not meet the complexity criteria.</label>
               )}{" "}
             </div>
             <input

@@ -1,5 +1,5 @@
 export function validateEmailString(email) {
-  var email_regex =
+  const email_regex =
     /^[0-9a-zA-Z]+@[0-9a-zA-Z]+[\.]{1}[0-9a-zA-Z]+[\.]?[0-9a-zA-Z]+$/;
   if (email_regex.test(email)) {
     return true;
@@ -8,13 +8,9 @@ export function validateEmailString(email) {
 }
 
 export function validatePasswordString(password) {
-  // Password cannot contain white spaces
-  if (/\s/.test(password)) {
-    return false;
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{4,}$/;
+  if (regex.test(password)) {
+    return true;
   }
-  // Password length must be 8 or more
-  if (password.length <= 7) {
-    return false;
-  }
-  return true;
+  return false;
 }
